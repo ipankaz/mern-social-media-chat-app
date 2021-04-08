@@ -22,7 +22,7 @@ const NewModal = (props) => {
 
   return(
     <Modal  size = {props.size} show={props.show} handleClose={props.handleClose} onHide={props.handleClose}
-    centered={props.centered}
+    centered={props.centered} scrollable
     >
         <Modal.Header >
           <Modal.Title>{props.modalTitle}</Modal.Title>

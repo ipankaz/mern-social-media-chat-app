@@ -14,14 +14,16 @@
     display: flex;
     margin: 15px;
 }
-.feed-1 .createPostSection-1 span{
+.feed-1 .createPostSection-1 p{ 
     background-color: aliceblue;
     border-radius: 35px;
     width: 450px;
-    height: 50px;
+    /* height: 50px; */
     cursor: pointer;
+    box-sizing: border-box;
+    padding-left: 20px;
 }
-.feed-1 .createPostSection-1 span p{
+.feed-1 .createPostSection-1 p{
     margin-left: 20px;
     line-height: 50px;
 }
@@ -77,4 +79,23 @@ color: #696969;
 }
 .addMediaModal>input {
     display: none;
+  }
+
+  div.mediaPreview{
+      border-radius: 7px;
+      overflow: hidden;
+      width: 100%;
+      position: relative;
+  }
+  div.mediaPreview .errorMessage{
+      color: red;
+  }
+  .removeMediaPreview ion-icon{
+      background-color:#DCDCDC;
+      border-radius:50%;
+      padding:5px;
+      position:absolute;
+      top:0;
+      margin-top:15px;
+      
   }

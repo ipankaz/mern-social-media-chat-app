@@ -88,7 +88,7 @@ const LoginSignup = (props) => {
               value={password}
               onChange={(event) => setPassword(event.target.value)}
             />
-            <input type="submit" value="Login" className="btn solid" />
+            <input type="submit" value="Login" className="btn-123 solid" />
           </form>
 
           {/* Sign up form  */}
@@ -142,7 +142,7 @@ const LoginSignup = (props) => {
               value={password}
               onChange={(event) => setPassword(event.target.value)}
             />
-            <input type="submit" value="Signup" className="btn solid" />
+            <input type="submit" value="Signup" className="btn-123 solid" />
           </form>
         </div>
       </div>
@@ -154,7 +154,7 @@ const LoginSignup = (props) => {
             <p>Register yourself by clicking on Signup Button</p>
             <button
               onClick={signUpBtn}
-              className="btn transparent"
+              className="btn-123 transparent-123"
               id="sign-up-btn"
             >
               Signup
@@ -168,7 +168,7 @@ const LoginSignup = (props) => {
             <p>Login yourself by clicking on Signin Button</p>
             <button
               onClick={signInBtn}
-              className="btn transparent"
+              className="btn-123 transparent-123"
               id="sign-in-btn"
             >
               Signin

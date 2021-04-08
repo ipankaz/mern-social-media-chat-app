@@ -12,13 +12,31 @@ import {  Container } from "react-bootstrap";
 
 const HomePage = (props) => {
   const [show, setShow] = useState(false);
+  const [mediaPreview,setMediaPreview] = useState(null);
+  const [mediaError,setMediaError] = useState(false);
 
   const handleShow = () => {
     setShow(true);
   };
   const handleClose = () => {
     setShow(false);
+    setMediaPreview(null);
+    setMediaError(false);
   };
+
+  const handleMediaUploadModal = (event)=>{
+      const selected = event.target.files[0];
+      const allowedTypes = ["image/jpg", "image/png","image/gif","image/jpeg","video/mp4","video/mov","video/3gp","video/mkv"]
+      if(selected && allowedTypes.includes(selected.type)){
+       let reader = new FileReader()
+       reader.onloadend = ()=>{
+            setMediaPreview(reader.result)
+       }
+       reader.readAsDataURL(selected)
+      }else{
+        setMediaError(true)
+      }
+  }
 
   const renderCreatePostModal = () => {
     return (
@@ -31,6 +49,7 @@ const HomePage = (props) => {
         //  action={submitCreatePageForm}
         _task={"Post"}
         centered="centered"
+        color="primary"
       >
         <Container fluid>
           <div className="createPostModal">
@@ -41,12 +60,20 @@ const HomePage = (props) => {
                <span className="usernameModal">Pankaj Arora</span>
             </div>
             <input type="textarea" className="descriptionModal" placeholder="What's on your mind, Pankaj?"></input>
-            <div class="addMediaModal">
-              <span className="mediaSpan">Add to your post</span>
-               <label for="file-input">
-               <ion-icon name="images-outline" className="mediaIcon"></ion-icon>
+            <div className="mediaPreview"> 
+               {mediaError && <p className="errorMessage"> Media not supported</p>}
+               {mediaPreview && <>
+                 <img src={mediaPreview} alt="selected media"></img>
+                <div className="removeMediaPreview"> <ion-icon onClick={()=>setMediaPreview(null)} name="close-outline"></ion-icon></div>
+                 </>
+               }
+            </div>
+            <div className="addMediaModal">
+               <span className="mediaSpan">Add to your post</span>
+                <label htmlFor="file-input">
+                <ion-icon name="images-outline" className="mediaIcon"></ion-icon>
                  </label>
-               <input id="file-input" type="file" />
+               <input id="file-input" type="file" onChange={handleMediaUploadModal} />
              </div>
           </div>
 
@@ -64,9 +91,9 @@ const HomePage = (props) => {
             <div className="profilePic-1">
               <img src={profilePic} alt="profile pic"></img>
             </div>
-            <span onClick={handleShow}>
-              <p>Write something here...</p>
-            </span>
+            
+              <p onClick={handleShow}>Write something here...</p>
+           
           </div>
           <div className="posts-1">
             <div className="post-1">This is post</div>

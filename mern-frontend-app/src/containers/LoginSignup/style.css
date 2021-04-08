@@ -110,7 +110,7 @@
     font-weight: 500;
   }
   
-  .btn {
+  .btn-123 {
     width: 150px;
     background-color: #5995fd;
     border: none;
@@ -125,7 +125,7 @@
     transition: 0.5s;
   }
   
-  .btn:hover {
+  .btn-123:hover {
     background-color: #4d84e2;
   }
   .panels-container-123 {
@@ -195,7 +195,7 @@
     padding: 0.7rem 0;
   }
   
-  .btn.transparent {
+  .btn-123.transparent-123 {
     margin: 0;
     background: none;
     border: 2px solid #fff;
@@ -308,7 +308,7 @@
       padding: 0.5rem 0;
     }
   
-    .btn.transparent {
+    .btn-123.transparent-123 {
       width: 110px;
       height: 35px;
       font-size: 0.7rem;
