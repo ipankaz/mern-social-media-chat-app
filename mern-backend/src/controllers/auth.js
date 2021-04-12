@@ -43,7 +43,7 @@ exports.signin = (req, res) => {
       return res.status(400).json({ error });
     }
     if (user) {
-      const { _id, firstName, lastName, email, role, fullName , username,contactNumber} = user;
+      const { _id, firstName, lastName, email, role, fullName , username,contactNumber,profilePicture} = user;
       const passwordValidation = await user.authenticate(req.body.password);
       if (passwordValidation && user.role==="user") {
         const token = jwt.sign({ _id: user._id ,role:user.role}, process.env.SECRET_KEY, {
@@ -51,7 +51,7 @@ exports.signin = (req, res) => {
         });
         res.status(200).json({
           token,
-          user: { _id, firstName, lastName, email, role, fullName ,username,contactNumber},
+          user: { _id, firstName, lastName, email, role, fullName ,username,contactNumber,profilePicture},
         });
       } else {
         return res.status(400).json({
@@ -63,6 +63,12 @@ exports.signin = (req, res) => {
     }
   });
 };
+
+exports.signout = (req,res,next)=>{
+  res.clearCookie('token')
+  res.status(200).send({message:"Signout Successfully"})
+}
+
 exports.requireSignin =(req,res,next)=>{
   const token = req.headers.authorization.split(" ")[1]
   const user = jwt.verify(token,process.env.SECRET_KEY)

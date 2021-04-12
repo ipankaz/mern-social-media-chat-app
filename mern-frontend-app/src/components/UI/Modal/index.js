@@ -21,8 +21,8 @@ const NewModal = (props) => {
   }
 
   return(
-    <Modal  size = {props.size} show={props.show} handleClose={props.handleClose} onHide={props.handleClose}
-    centered={props.centered} scrollable
+    <Modal  size = {props.size} show={props.show}  onHide={props.handleCloseModal}
+    centered={props.centered} scrollable className={props.className}
     >
         <Modal.Header >
           <Modal.Title>{props.modalTitle}</Modal.Title>
@@ -31,7 +31,7 @@ const NewModal = (props) => {
             {props.children}
         </Modal.Body>
         <Modal.Footer>
-         <Button className="btn-sm" variant="secondary" onClick={props.handleClose}> Close </Button>
+         <Button className="btn-sm" variant="secondary" onClick={props.handleCloseModal}> Close </Button>
            {task()}
            </Modal.Footer>
       </Modal>

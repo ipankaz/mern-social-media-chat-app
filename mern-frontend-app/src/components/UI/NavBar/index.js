@@ -1,7 +1,9 @@
 import React, { useState } from "react";
 import "./style.css";
 import WebsiteLogo from "../../../Media/profilePic.jpg";
-import { NavLink } from 'react-router-dom';
+import { NavLink ,useHistory} from 'react-router-dom';
+import { useDispatch } from "react-redux";
+import {signout} from '../../../Actions/index'
 // import { Row } from "react-bootstrap";
 
 /**
@@ -10,6 +12,8 @@ import { NavLink } from 'react-router-dom';
  **/
 
 const NavBar = (props) => {
+  const dispatch = useDispatch()
+  const history = useHistory();
   const [navClass, setNavClass] = useState("nav");
 
   const showMenu = () => {
@@ -22,6 +26,12 @@ const NavBar = (props) => {
       setNavClass("nav");
     }
   };
+
+  const handleSignout = ()=>{
+    history.push("/login")
+     dispatch(signout())
+     
+  }
 
   return (
     <>
@@ -92,7 +102,7 @@ const NavBar = (props) => {
             </a>
           </div> */}
           <div className="nav_signout">
-            <span className="nav_signout-span">Signout</span>
+            <span onClick={handleSignout} className="nav_signout-span">Signout</span>
           </div>
         </div>
       </nav>

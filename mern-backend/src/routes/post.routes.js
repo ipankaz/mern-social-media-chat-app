@@ -3,7 +3,7 @@ const router = express.Router()
 const multer = require('multer')
 const shortId = require('shortid')
 const path = require('path')
-const {createPost, deletePostById, updatePostById} = require('../controllers/post')
+const {createPost, deletePostById, updatePostById, getPosts} = require('../controllers/post')
 const {requireSignin} = require('../common-middlewares/index')
 
 const storage = multer.diskStorage({
@@ -20,5 +20,6 @@ const storage = multer.diskStorage({
   router.post('/post/create',requireSignin,upload.array('pictures'),createPost)
   router.post('/post/delete',requireSignin,deletePostById)
   router.post('/post/update',requireSignin,updatePostById)
+  router.get('/post/getposts',requireSignin,getPosts)
 
   module.exports=router

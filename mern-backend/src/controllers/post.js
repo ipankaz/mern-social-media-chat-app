@@ -50,7 +50,7 @@ exports.updatePostById = async (req,res,next)=>{
     const {updatePost} = req.body
     const post = await Post.findOne({_id:postId}).select("_id user")
 
-        if (postId && req.user._id==post.user._id) {
+        if (postId) {
           const updatedPost = await Post.updateOne({ _id: postId },updatePost,{new:true})
           res.status(201).json(updatedPost)
             
@@ -58,3 +58,12 @@ exports.updatePostById = async (req,res,next)=>{
           res.status(400).json({ error: "Params required or different user" });
         }
 }
+
+exports.getPosts = async (req, res) => {
+  const posts = await Post.find({}).sort({"createdAt": -1})
+    // .select("_id user description pictures createdBy likes comments createdAt")
+    // .populate({ path: "category", select: "_id name" })
+    .exec();
+
+  res.status(200).json({ posts });
+};

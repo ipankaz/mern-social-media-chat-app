@@ -1,19 +1,47 @@
-import React, { useState } from "react";
+import React, { useState ,useEffect} from "react";
 import "./style.css";
 // import Input from '../../components/UI/Input'
 import profilePic from "../../Media/profilePic.jpg";
 import Modal from "../../components/UI/Modal";
 import NavBar from "../../components/UI/NavBar";
-import {  Container } from "react-bootstrap";
+import { Container } from "react-bootstrap";
+import { useDispatch,useSelector } from "react-redux";
+import { createPost,getPosts } from "../../Actions/post.action";
+import PostFeed from "../../components/UI/PostFeed";
+import CommentBox from "../../components/UI/CommentBox";
+
+// import {useHistory} from 'react-router-dom'
+// import { generatePublicUrl } from "../../urlConfig";
 /**
  * @author
  * @function HomePage
  **/
-
+ let data = true;
 const HomePage = (props) => {
+  const [description, setDescription] = useState("");
   const [show, setShow] = useState(false);
-  const [mediaPreview,setMediaPreview] = useState(null);
-  const [mediaError,setMediaError] = useState(false);
+  const [mediaPreview, setMediaPreview] = useState(null);
+  const [mediaError, setMediaError] = useState(false);
+  const [postPictures, setPostPictures] = useState([]);
+  const [commentModal, setCommentModal] = useState(false);
+  const [childPost,setChildPost] = useState(null)
+  const dispatch = useDispatch()
+  const auth = useSelector(state=>state.auth)
+  // const history = useHistory()
+
+  useEffect(()=>{
+    if(auth.authenticate && data){
+      dispatch(getPosts())
+      data=false;
+    }
+  },[auth.authenticate,dispatch])
+
+  // if(!auth.authenticate){
+  //    history.push('/login')
+  // }
+
+  const allPosts = useSelector(state=>state.post);
+  
 
   const handleShow = () => {
     setShow(true);
@@ -24,32 +52,75 @@ const HomePage = (props) => {
     setMediaError(false);
   };
 
-  const handleMediaUploadModal = (event)=>{
-      const selected = event.target.files[0];
-      const allowedTypes = ["image/jpg", "image/png","image/gif","image/jpeg","video/mp4","video/mov","video/3gp","video/mkv"]
-      if(selected && allowedTypes.includes(selected.type)){
-       let reader = new FileReader()
-       reader.onloadend = ()=>{
-            setMediaPreview(reader.result)
-       }
-       reader.readAsDataURL(selected)
-      }else{
-        setMediaError(true)
-      }
-  }
+  const handleModalDescription = (event) => {
+    setDescription(event.target.value);
+  };
+
+  const submitCreatePostForm = () => {
+    if (description === "" || postPictures.length === 0) {
+      alert("Empty Fields");
+      return;
+    }
+
+    const form = new FormData();
+    form.append("description", description);
+    postPictures.forEach((picture, index) => {
+      form.append("pictures", picture);
+    });
+    
+    dispatch(createPost(form))
+    setDescription("");setPostPictures([]);
+    handleClose()
+  };
+
+  const handleMediaUploadModal = (event) => {
+    const selected = event.target.files[0];
+    // setPostPictures(...postPictures, selected);
+    setMediaError(false)
+    const allowedTypes = [
+      "image/jpg",
+      "image/png",
+      "image/gif",
+      "image/jpeg",
+      "video/mp4",
+      "video/mov",
+      "video/3gp",
+      "video/mkv",
+    ];
+    if (selected && allowedTypes.includes(selected.type)) {
+      setPostPictures([...postPictures, selected]);
+      let reader = new FileReader();
+      reader.onloadend = () => {
+        setMediaPreview(reader.result);
+      };
+      reader.readAsDataURL(selected);
+    } else {
+      setMediaError(true);
+    }
+  };
+   
+  const handleCommentBoxModal = (post)=>{
+    setCommentModal(true)
+    setChildPost(post)
+}
+
+const handleCloseCommentBoxModal = ()=>{
+setCommentModal(false)
+}
 
   const renderCreatePostModal = () => {
     return (
       <Modal
         //  size="sm"
-        modalTitle={"Create Post"}
+        // modalTitle={"Create Post"}
         show={show}
-        handleClose={handleClose}
+        handleCloseModal={handleClose}
         onHide={handleClose}
-        //  action={submitCreatePageForm}
+        action={submitCreatePostForm}
         _task={"Post"}
         centered="centered"
         color="primary"
+        className="my-modal"
       >
         <Container fluid>
           <div className="createPostModal">
@@ -57,30 +128,81 @@ const HomePage = (props) => {
               <div className="profilePic-1">
                 <img src={profilePic} alt="profile pic"></img>
               </div>
-               <span className="usernameModal">Pankaj Arora</span>
+              <span className="usernameModal">Pankaj Arora</span>
             </div>
-            <input type="textarea" className="descriptionModal" placeholder="What's on your mind, Pankaj?"></input>
-            <div className="mediaPreview"> 
-               {mediaError && <p className="errorMessage"> Media not supported</p>}
-               {mediaPreview && <>
-                 <img src={mediaPreview} alt="selected media"></img>
-                <div className="removeMediaPreview"> <ion-icon onClick={()=>setMediaPreview(null)} name="close-outline"></ion-icon></div>
-                 </>
-               }
+            <input
+              onChange={handleModalDescription}
+              value={description}
+              type="textarea"
+              className="descriptionModal"
+              placeholder="What's on your mind, Pankaj?"
+            ></input>
+            <div className="mediaPreview">
+              {mediaError && (
+                <p className="errorMessage"> Media not supported</p>
+              )}
+              {mediaPreview && (
+                <>
+                  <img src={mediaPreview} alt="selected media"></img>
+                  <div className="removeMediaPreview">
+                    {" "}
+                    <ion-icon
+                      onClick={() => setMediaPreview(null)}
+                      name="close-outline"
+                    ></ion-icon>
+                  </div>
+                </>
+              )}
             </div>
             <div className="addMediaModal">
-               <span className="mediaSpan">Add to your post</span>
-                <label htmlFor="file-input">
-                <ion-icon name="images-outline" className="mediaIcon"></ion-icon>
-                 </label>
-               <input id="file-input" type="file" onChange={handleMediaUploadModal} />
-             </div>
+              <span className="mediaSpan">Add to your post</span>
+              <label htmlFor="file-input">
+                <ion-icon
+                  name="images-outline"
+                  className="mediaIcon"
+                ></ion-icon>
+              </label>
+              <input
+                id="file-input"
+                type="file"
+                onChange={handleMediaUploadModal}
+              />
+            </div>
           </div>
-
         </Container>
       </Modal>
     );
   };
+
+  const renderCommentBoxModal = ()=>{
+    return(
+      <Modal
+        show={commentModal}
+        // modalTitle={"Comments"}
+        handleCloseModal={handleCloseCommentBoxModal}
+        onHide={handleCloseCommentBoxModal}
+        centered="centered"
+        color="primary"
+        className="my-modal"
+      >
+      {childPost && 
+         <Container fluid>
+             <div className="allUserComments">
+               {childPost.comments.map((comment,index)=>(
+                <CommentBox
+                key={index}
+               profilePic={profilePic}
+               postComment={comment.comment}
+               user={comment.user}
+               />
+               ))}
+               
+             </div>
+         </Container>
+      }
+      </Modal>
+    )
+  }
 
   return (
     <>
@@ -91,15 +213,35 @@ const HomePage = (props) => {
             <div className="profilePic-1">
               <img src={profilePic} alt="profile pic"></img>
             </div>
-            
-              <p onClick={handleShow}>Write something here...</p>
-           
+             <div className="createBtn"> 
+               <p onClick={handleShow}>Write something here...</p>
+             </div>
           </div>
           <div className="posts-1">
-            <div className="post-1">This is post</div>
+            {/* <div className="post-1">This is post</div> */}
+
+            {/* All Post Feed goes here */}
+
+            {allPosts.posts.map((post,index)=>{
+              return(
+                <PostFeed 
+                post={post}
+                id={post._id}
+                key={index}
+                src={profilePic}
+                description={post.description}
+                uploadedMedia={post.pictures[0].img}
+                fullName = {`${post.user.firstName} ${post.user.lastName}`}
+                likes={post.likes}
+                comments={post.comments}
+                onChange={handleCommentBoxModal}
+                />
+              )
+            })}
           </div>
         </div>
         {renderCreatePostModal()}
+        {renderCommentBoxModal()}
       </div>
     </>
   );

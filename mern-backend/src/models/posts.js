@@ -15,13 +15,15 @@ const postSchema = new mongoose.Schema({
     likes:[{
         userId : {type:mongoose.Schema.Types.ObjectId , 
                   ref:'User',
-                  unique:true},
-        
+                //   unique:true
+                },
+        user:Object
     }],
     comments:[{
         userId : {type:mongoose.Schema.Types.ObjectId , ref:'User'}, 
         comment:String,
-        likes:Number
+        likes:Number,
+        user:Object
     }],
     pictures:[
         {img:{type:String}}
