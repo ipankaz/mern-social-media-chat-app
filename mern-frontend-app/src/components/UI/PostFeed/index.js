@@ -77,6 +77,10 @@ const PostFeed = (props) => {
       props.onChange(props.post)
   }
 
+  const handleLikeBoxModal = ()=>{
+    props.onLikeChange(props.post)
+  }
+
   const handleKeypress = (e) => {
     //it triggers by pressing the enter key
   if (e.keyCode === 13) {
@@ -107,7 +111,7 @@ const PostFeed = (props) => {
         ></img>
       </div>
       <div className="likesCommentsPost-11">
-        <span className="likesPost-11">
+        <span onClick={handleLikeBoxModal} className="likesPost-11">
           {totalLikes} Like{totalLikes > 1 && "s"}
         </span>
         <span onClick={handleCommentBoxModal} className="commentsPost-11">

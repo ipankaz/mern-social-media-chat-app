@@ -1,6 +1,5 @@
 import React, { useState ,useEffect} from "react";
 import "./style.css";
-// import Input from '../../components/UI/Input'
 import profilePic from "../../Media/profilePic.jpg";
 import Modal from "../../components/UI/Modal";
 import NavBar from "../../components/UI/NavBar";
@@ -9,8 +8,7 @@ import { useDispatch,useSelector } from "react-redux";
 import { createPost,getPosts } from "../../Actions/post.action";
 import PostFeed from "../../components/UI/PostFeed";
 import CommentBox from "../../components/UI/CommentBox";
-
-// import {useHistory} from 'react-router-dom'
+import LikeBox from "../../components/UI/LikeBox";
 // import { generatePublicUrl } from "../../urlConfig";
 /**
  * @author
@@ -24,10 +22,12 @@ const HomePage = (props) => {
   const [mediaError, setMediaError] = useState(false);
   const [postPictures, setPostPictures] = useState([]);
   const [commentModal, setCommentModal] = useState(false);
+  const [likeModal, setLikeModal] = useState(false);
   const [childPost,setChildPost] = useState(null)
+  const [likedUser,setLikedUser] = useState(null)
   const dispatch = useDispatch()
   const auth = useSelector(state=>state.auth)
-  // const history = useHistory()
+
 
   useEffect(()=>{
     if(auth.authenticate && data){
@@ -35,10 +35,6 @@ const HomePage = (props) => {
       data=false;
     }
   },[auth.authenticate,dispatch])
-
-  // if(!auth.authenticate){
-  //    history.push('/login')
-  // }
 
   const allPosts = useSelector(state=>state.post);
   
@@ -103,9 +99,17 @@ const HomePage = (props) => {
     setCommentModal(true)
     setChildPost(post)
 }
+const handleLikeBoxaModal = (post)=>{
+    setLikeModal(true)
+    setLikedUser(post)
+}
 
 const handleCloseCommentBoxModal = ()=>{
 setCommentModal(false)
+}
+
+const handleCloseLikeBoxModal = ()=>{
+  setLikeModal(false)
 }
 
   const renderCreatePostModal = () => {
@@ -191,11 +195,40 @@ setCommentModal(false)
                {childPost.comments.map((comment,index)=>(
                 <CommentBox
                 key={index}
-               profilePic={profilePic}
-               postComment={comment.comment}
-               user={comment.user}
+                profilePic={profilePic}
+                postComment={comment.comment}
+                user={comment.user}
+                originalPost={childPost}
+                id={comment._id}
                />
                ))}
+               
+             </div>
+         </Container>
+      }
+      </Modal>
+    )
+  }
+
+  const renderLikeBoxModal = ()=>{
+    return(
+      <Modal
+        show={likeModal}
+        handleCloseModal={handleCloseLikeBoxModal}
+        onHide={handleCloseLikeBoxModal}
+        centered="centered"
+        color="primary"
+        className="my-modal"
+      >
+      {likedUser && 
+         <Container fluid>
+             <div className="allUserLikes">
+              {likedUser.likes.map((like,index)=>(
+                <LikeBox
+                user={like.user}
+                profilePic={profilePic}
+                />
+              ))}
                
              </div>
          </Container>
@@ -235,6 +268,7 @@ setCommentModal(false)
                 likes={post.likes}
                 comments={post.comments}
                 onChange={handleCommentBoxModal}
+                onLikeChange={handleLikeBoxaModal}
                 />
               )
             })}
@@ -242,6 +276,7 @@ setCommentModal(false)
         </div>
         {renderCreatePostModal()}
         {renderCommentBoxModal()}
+        {renderLikeBoxModal()}
       </div>
     </>
   );

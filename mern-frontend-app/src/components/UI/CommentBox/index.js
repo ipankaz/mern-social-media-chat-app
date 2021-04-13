@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
+import { updatePost } from '../../../Actions'
 import './style.css'
 /**
 * @author
@@ -9,12 +10,27 @@ import './style.css'
 const CommentBox = (props) => {
    const auth = useSelector(state=>state.auth)
    const [verifiedUser,setVerifiesUser] = useState(false)
+   const dispatch = useDispatch();
    
    useEffect(()=>{
     if(props.user._id===auth.user._id){
         setVerifiesUser(true)
     }
    },[verifiedUser,auth.user._id,props.user._id])
+
+   const handleDeleteUserComment = ()=>{
+      
+       for(let i = 0 ; i<props.originalPost.comments.length ; i++){
+           if(props.id===props.originalPost.comments[i]._id){
+               props.originalPost.comments.splice(i,1);
+               const updatedPost = {
+                ...props.originalPost,
+              };
+                dispatch(updatePost(updatedPost))
+               return;
+           }
+       }
+   }
 
   return(
     <div className="userCommentBox">
@@ -28,7 +44,7 @@ const CommentBox = (props) => {
              </div>
              {verifiedUser && 
              <div className="userCommentDeleteIcon">
-                <ion-icon name="trash-outline"></ion-icon>
+                <ion-icon onClick={handleDeleteUserComment} name="trash-outline"></ion-icon>
              </div>}
            </div>
           
