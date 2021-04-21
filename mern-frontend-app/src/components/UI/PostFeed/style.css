@@ -45,6 +45,16 @@ margin-bottom:40px
     text-align: left;
     font-size:0.8rem;
     margin-top: -20px;
+    outline: none;
+}
+.post-11 .descriptionPost-11 span{
+    padding:0 15px 8px 15px;
+    font-size:0.8rem;
+    margin-top: -20px;
+}
+.post-11 div.uploadedMedia-11 img{
+    display: block;
+    margin : 0 auto;
 }
 
 .post-11 .likesCommentsPost-11 span.likesPost-11{
@@ -136,6 +146,9 @@ box-sizing: border-box;
     border-radius:50%;
     
  }
+ div.profilePost-11 div.dropDownIcon ion-icon{
+     margin-top: -8px;
+ }
 
  @media (max-width:500px){
 
@@ -201,4 +214,8 @@ box-sizing: border-box;
          margin-top: 2.8vw;
          font-size: 5vw;
      }
+     div.profilePost-11 div.dropDownIcon ion-icon{
+        font-size: 1.1rem;
+        margin-top: -5px;
+    }
 }

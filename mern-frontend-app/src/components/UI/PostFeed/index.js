@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from "react";
+// import ContentEditable from 'react-contenteditable'
 import { useDispatch, useSelector } from "react-redux";
 import { updatePost } from "../../../Actions";
 import { generatePublicUrl } from "../../../urlConfig";
+import DropDown from "../DropDown";
 import "./style.css";
 /**
  * @author
@@ -12,7 +14,8 @@ const PostFeed = (props) => {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.auth.user);
   const [postLiked, setPostLiked] = useState(false);
-  
+  const [dropDown, setDropDown] = useState(false);
+  const [verifiedUser, setVerifiesUser] = useState(false);
   const [userComment, setUserComment] = useState("");
   const [totalLikes, setTotalLikes] = useState(props.likes.length);
   const [totalComments, setTotalComments] = useState(props.comments.length);
@@ -25,10 +28,16 @@ const PostFeed = (props) => {
     }
   }, [postLiked, props.post.likes, user._id]);
 
+  useEffect(() => {
+    if (props.post.user._id === user._id) {
+      setVerifiesUser(true);
+    }
+  }, [verifiedUser, user._id, props.post.user._id]);
+
   const handlePostLike = () => {
     const likedUser = {
       userId: user._id,
-      user:user
+      user: user,
     };
 
     if (postLiked) {
@@ -60,7 +69,7 @@ const PostFeed = (props) => {
       userId: user._id,
       comment: userComment,
       likes: 0,
-      user:user
+      user: user,
     };
     props.post.comments.push(UserComment);
     const updatedPost = {
@@ -70,26 +79,43 @@ const PostFeed = (props) => {
   };
 
   const createdAt = props.post.createdAt.split("T");
-  // const postDate = createdAt.split("-") ;
 
+  const handleCommentBoxModal = () => {
+    totalComments && props.onChange(props.post);
+  };
 
-  const handleCommentBoxModal = ()=>{
-      props.onChange(props.post)
-  }
+  const handleLikeBoxModal = () => {
+    totalLikes > 0 && props.onLikeChange(props.post);
+  };
 
-  const handleLikeBoxModal = ()=>{
-    props.onLikeChange(props.post)
-  }
-
-  const handleKeypress = (e) => {
+  const handleKeyPress = (e) => {
     //it triggers by pressing the enter key
-  if (e.keyCode === 13) {
-    handleSubmitComment();
-  }
-};
+    if (e.KeyCode === 13) {
+      console.log("entered");
+      handleSubmitComment();
+    }
+  };
+
+  const handleDropDown = () => {
+    if (dropDown) {
+      setDropDown(false);
+    } else {
+      setDropDown(true);
+    }
+  };
+
+  const handlePostDelete = () => {
+    props.onDeleteChange(props.post._id);
+    // dispatch(deletePostById(props.post._id))
+    setDropDown(false);
+  };
+
+  const handleEdit = () => {
+    props.onEditChange(props.post);
+    setDropDown(false);
+  };
 
   return (
-    
     <div className="post-11">
       <div className="profilePost-11">
         <div className="profilePic-11">
@@ -97,19 +123,38 @@ const PostFeed = (props) => {
         </div>
         <span className="usernamePost-11">{props.fullName}</span>
         <span className="sloganPost-11">uploaded new photo.</span>
+        <div className="dropDownIcon">
+          {verifiedUser && (
+            <ion-icon
+              onClick={handleDropDown}
+              name="ellipsis-horizontal"
+            ></ion-icon>
+          )}
+          {dropDown && (
+            <DropDown
+              post={props.post}
+              handleDelete={handlePostDelete}
+              handleEdit={handleEdit}
+            />
+          )}
+        </div>
       </div>
       <div className="timePost-11">
         <span>{createdAt[0]}</span>
       </div>
-      <div className="descriptionPost-11">
-        <p>{props.description}</p>
-      </div>
-      <div className="uploadedMedia-11">
-        <img
-          src={generatePublicUrl(props.uploadedMedia)}
-          alt="uploaded Media"
-        ></img>
-      </div>
+      {props.description && (
+        <div className="descriptionPost-11">
+          <p>{props.description}</p>
+        </div>
+      )}
+      {props.uploadedMedia && (
+        <div className="uploadedMedia-11">
+          <img
+            src={generatePublicUrl(props.uploadedMedia)}
+            alt="uploaded Media"
+          ></img>
+        </div>
+      )}
       <div className="likesCommentsPost-11">
         <span onClick={handleLikeBoxModal} className="likesPost-11">
           {totalLikes} Like{totalLikes > 1 && "s"}
@@ -138,13 +183,13 @@ const PostFeed = (props) => {
           </span>
         </div>
         <div className="commentPost-11">
-          <label htmlFor="comment-11">
+          <label htmlFor={`comment-${props.index}`}>
             <div className="commentIcon-11">
               <ion-icon name="chatbox-outline"></ion-icon>
             </div>
           </label>
-          <label htmlFor="comment-11">
-            <span>Comment</span>{" "}
+          <label htmlFor={`comment-${props.index}`}>
+            <span>Comment</span>
           </label>
         </div>
       </div>
@@ -160,15 +205,13 @@ const PostFeed = (props) => {
           <input
             onChange={(e) => setUserComment(e.target.value)}
             value={userComment}
-            id="comment-11"
+            id={`comment-${props.index}`}
             placeholder="Write a comment..."
-            onKeyPress={handleKeypress}
+            onKeyPress={handleKeyPress}
           />
         </div>
       </div>
     </div>
-    
-    
   );
 };
 

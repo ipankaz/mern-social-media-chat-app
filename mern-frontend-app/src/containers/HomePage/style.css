@@ -107,6 +107,10 @@ color: #696969;
       width: 100%;
       position: relative;
   }
+  div.mediaPreview img{
+      display: block;
+      margin: 0 auto;
+  }
   div.mediaPreview .errorMessage{
       color: red;
   }

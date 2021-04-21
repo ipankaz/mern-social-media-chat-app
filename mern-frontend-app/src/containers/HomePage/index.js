@@ -1,20 +1,25 @@
-import React, { useState ,useEffect} from "react";
+import React, { useState, useEffect } from "react";
 import "./style.css";
 import profilePic from "../../Media/profilePic.jpg";
 import Modal from "../../components/UI/Modal";
 import NavBar from "../../components/UI/NavBar";
 import { Container } from "react-bootstrap";
-import { useDispatch,useSelector } from "react-redux";
-import { createPost,getPosts } from "../../Actions/post.action";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  createPost,
+  deletePostById,
+  getPosts,
+  editPostById,
+} from "../../Actions/post.action";
 import PostFeed from "../../components/UI/PostFeed";
 import CommentBox from "../../components/UI/CommentBox";
 import LikeBox from "../../components/UI/LikeBox";
-// import { generatePublicUrl } from "../../urlConfig";
+import { generatePublicUrl } from "../../urlConfig";
 /**
  * @author
  * @function HomePage
  **/
- let data = true;
+let data = true;
 const HomePage = (props) => {
   const [description, setDescription] = useState("");
   const [show, setShow] = useState(false);
@@ -23,21 +28,24 @@ const HomePage = (props) => {
   const [postPictures, setPostPictures] = useState([]);
   const [commentModal, setCommentModal] = useState(false);
   const [likeModal, setLikeModal] = useState(false);
-  const [childPost,setChildPost] = useState(null)
-  const [likedUser,setLikedUser] = useState(null)
-  const dispatch = useDispatch()
-  const auth = useSelector(state=>state.auth)
+  const [confirmPostDelete, setConfirmPostDelete] = useState(false);
+  const [editPost, setEditPost] = useState(false);
+  const [postMedia, setPostMedia] = useState(true);
+  const [editingPost, setEditingPost] = useState(null);
+  const [postDeletionId, setPostDeletionId] = useState(null);
+  const [childPost, setChildPost] = useState(null);
+  const [likedUser, setLikedUser] = useState(null);
+  const dispatch = useDispatch();
+  const auth = useSelector((state) => state.auth);
 
-
-  useEffect(()=>{
-    if(auth.authenticate && data){
-      dispatch(getPosts())
-      data=false;
+  useEffect(() => {
+    if (auth.authenticate && data) {
+      dispatch(getPosts());
+      data = false;
     }
-  },[auth.authenticate,dispatch])
+  }, [auth.authenticate, dispatch]);
 
-  const allPosts = useSelector(state=>state.post);
-  
+  const allPosts = useSelector((state) => state.post);
 
   const handleShow = () => {
     setShow(true);
@@ -53,7 +61,7 @@ const HomePage = (props) => {
   };
 
   const submitCreatePostForm = () => {
-    if (description === "" || postPictures.length === 0) {
+    if (description === "" && postPictures.length === 0) {
       alert("Empty Fields");
       return;
     }
@@ -64,15 +72,17 @@ const HomePage = (props) => {
       form.append("pictures", picture);
     });
     
-    dispatch(createPost(form))
-    setDescription("");setPostPictures([]);
-    handleClose()
+    console.log(form);
+    dispatch(createPost(form));
+    setDescription("");
+    setPostPictures([]);
+    handleClose();
   };
 
   const handleMediaUploadModal = (event) => {
     const selected = event.target.files[0];
     // setPostPictures(...postPictures, selected);
-    setMediaError(false)
+    setMediaError(false);
     const allowedTypes = [
       "image/jpg",
       "image/png",
@@ -94,23 +104,81 @@ const HomePage = (props) => {
       setMediaError(true);
     }
   };
-   
-  const handleCommentBoxModal = (post)=>{
-    setCommentModal(true)
-    setChildPost(post)
-}
-const handleLikeBoxaModal = (post)=>{
-    setLikeModal(true)
-    setLikedUser(post)
-}
 
-const handleCloseCommentBoxModal = ()=>{
-setCommentModal(false)
-}
+  const handleCommentBoxModal = (post) => {
+    setCommentModal(true);
+    setChildPost(post);
+  };
 
-const handleCloseLikeBoxModal = ()=>{
-  setLikeModal(false)
-}
+  const handleLikeBoxaModal = (post) => {
+    setLikeModal(true);
+    setLikedUser(post);
+  };
+
+  const handleCloseCommentBoxModal = () => {
+    setCommentModal(false);
+  };
+
+  const handleCloseLikeBoxModal = () => {
+    setLikeModal(false);
+  };
+
+  const handleCloseDeletePostModal = () => {
+    setConfirmPostDelete(false);
+  };
+
+  const handleDeletePostModal = (id) => {
+    setPostDeletionId(id);
+    setConfirmPostDelete(true);
+  };
+
+  const deletePost = () => {
+    dispatch(deletePostById(postDeletionId));
+    setConfirmPostDelete(false);
+  };
+
+  const handleEditPostModal = (post) => {
+    setEditingPost(post);
+    setDescription(post.description);
+    setEditPost(true);
+    setPostMedia(true)
+    setMediaError(false)
+  };
+
+  const handleCloseEditPostModal = () => {
+    setEditPost(false);
+  };
+
+  const editPostAction = () => {
+    if (description === "" && postPictures.length === 0) {
+      alert("Empty Fields");
+      return;
+    }
+    
+    const form1 = new FormData();
+    
+    if(description!==""){
+      form1.append("description", description);
+      
+    }
+    if(postPictures.length>0){
+      postPictures.forEach((picture, index) => {
+        form1.append("pictures", picture);
+    
+      })
+    }
+    const updatedPost = {
+      _id:editingPost._id,
+      form:form1
+    }
+    
+    
+    dispatch(editPostById(updatedPost))
+    setDescription("");
+    setPostPictures([]);
+    handleCloseEditPostModal()
+    
+  };
 
   const renderCreatePostModal = () => {
     return (
@@ -178,8 +246,8 @@ const handleCloseLikeBoxModal = ()=>{
     );
   };
 
-  const renderCommentBoxModal = ()=>{
-    return(
+  const renderCommentBoxModal = () => {
+    return (
       <Modal
         show={commentModal}
         // modalTitle={"Comments"}
@@ -189,29 +257,28 @@ const handleCloseLikeBoxModal = ()=>{
         color="primary"
         className="my-modal"
       >
-      {childPost && 
-         <Container fluid>
-             <div className="allUserComments">
-               {childPost.comments.map((comment,index)=>(
+        {childPost && (
+          <Container fluid>
+            <div className="allUserComments">
+              {childPost.comments.map((comment, index) => (
                 <CommentBox
-                key={index}
-                profilePic={profilePic}
-                postComment={comment.comment}
-                user={comment.user}
-                originalPost={childPost}
-                id={comment._id}
-               />
-               ))}
-               
-             </div>
-         </Container>
-      }
+                  key={index}
+                  profilePic={profilePic}
+                  postComment={comment.comment}
+                  user={comment.user}
+                  originalPost={childPost}
+                  id={comment._id}
+                />
+              ))}
+            </div>
+          </Container>
+        )}
       </Modal>
-    )
-  }
+    );
+  };
 
-  const renderLikeBoxModal = ()=>{
-    return(
+  const renderLikeBoxModal = () => {
+    return (
       <Modal
         show={likeModal}
         handleCloseModal={handleCloseLikeBoxModal}
@@ -220,22 +287,124 @@ const handleCloseLikeBoxModal = ()=>{
         color="primary"
         className="my-modal"
       >
-      {likedUser && 
-         <Container fluid>
-             <div className="allUserLikes">
-              {likedUser.likes.map((like,index)=>(
-                <LikeBox
-                user={like.user}
-                profilePic={profilePic}
-                />
+        {likedUser && (
+          <Container fluid>
+            <div className="allUserLikes">
+              {likedUser.likes.map((like, index) => (
+                <LikeBox key={index} user={like.user} profilePic={profilePic} />
               ))}
-               
-             </div>
-         </Container>
-      }
+            </div>
+          </Container>
+        )}
       </Modal>
-    )
-  }
+    );
+  };
+
+  const renderConfirmPostDeleteModal = () => {
+    return (
+      <Modal
+        show={confirmPostDelete}
+        handleCloseModal={handleCloseDeletePostModal}
+        onHide={handleCloseDeletePostModal}
+        centered="centered"
+        color="danger"
+        className="my-modal"
+        _task={"Delete Post"}
+        action={deletePost}
+      >
+        <Container fluid>
+          <div>
+            <span>Are you Sure ?</span>
+          </div>
+        </Container>
+      </Modal>
+    );
+  };
+
+  const renderEditPostModal = () => {
+    return (
+      <Modal
+        show={editPost}
+        handleCloseModal={handleCloseEditPostModal}
+        onHide={handleCloseEditPostModal}
+        centered="centered"
+        color="success"
+        className="my-modal"
+        _task={"Save Changes"}
+        action={editPostAction}
+      >
+        <Container fluid>
+          <div className="createPostModal">
+            <div className="profileModal">
+              <div className="profilePic-1">
+                <img src={profilePic} alt="profile pic"></img>
+              </div>
+              {editingPost && (
+                <span className="usernameModal">{`${editingPost.user.firstName} ${editingPost.user.lastName}`}</span>
+              )}
+            </div>
+            <input
+              onChange={editingPost && handleModalDescription}
+              value={editingPost && description}
+              type="textarea"
+              className="descriptionModal"
+              placeholder="What's on your mind, Pankaj?"
+            ></input>
+            {!postMedia ? (
+              <div className="mediaPreview">
+                {mediaError && (
+                  <p className="errorMessage"> Media not supported</p>
+                )}
+                {mediaPreview && (
+                  <>
+                    <img src={mediaPreview} alt="selected media"></img>
+                    <div className="removeMediaPreview">
+                      <ion-icon
+                        onClick={() => setMediaPreview(null)}
+                        name="close-outline"
+                      ></ion-icon>
+                    </div>
+                  </>
+                )}
+              </div>
+            ) : (
+              <div className="mediaPreview">
+                {editingPost && (
+                  <>
+                    <img
+                      src={generatePublicUrl(editingPost.pictures[0].img)}
+                      alt="selected media"
+                    ></img>
+                    <div className="removeMediaPreview">
+                      <ion-icon
+                        onClick={function () {setPostMedia(false); setMediaPreview(null) }}
+                        name="close-outline"
+                      ></ion-icon>
+                    </div>
+                  </>
+                )}
+              </div>
+            )}
+
+            <div className="addMediaModal">
+              <span className="mediaSpan">Add to your post</span>
+              <label htmlFor="file-input">
+                <ion-icon
+                  name="images-outline"
+                  className="mediaIcon"
+                ></ion-icon>
+              </label>
+              <input
+                id="file-input"
+                type="file"
+                onChange={handleMediaUploadModal}
+              />
+            </div>
+          </div>
+        </Container>
+      </Modal>
+    );
+  };
 
   return (
     <>
@@ -246,37 +415,40 @@ const handleCloseLikeBoxModal = ()=>{
             <div className="profilePic-1">
               <img src={profilePic} alt="profile pic"></img>
             </div>
-             <div className="createBtn"> 
-               <p onClick={handleShow}>Write something here...</p>
-             </div>
+            <div className="createBtn">
+              <p onClick={handleShow}>Write something here...</p>
+            </div>
           </div>
           <div className="posts-1">
-            {/* <div className="post-1">This is post</div> */}
-
             {/* All Post Feed goes here */}
 
-            {allPosts.posts.map((post,index)=>{
-              return(
-                <PostFeed 
-                post={post}
-                id={post._id}
-                key={index}
-                src={profilePic}
-                description={post.description}
-                uploadedMedia={post.pictures[0].img}
-                fullName = {`${post.user.firstName} ${post.user.lastName}`}
-                likes={post.likes}
-                comments={post.comments}
-                onChange={handleCommentBoxModal}
-                onLikeChange={handleLikeBoxaModal}
+            {allPosts.posts.map((post, index) => {
+              return (
+                <PostFeed
+                  post={post}
+                  id={post._id}
+                  key={index}
+                  index={index}
+                  src={profilePic}
+                  description={post.description && post.description}
+                  uploadedMedia={post.pictures.length>0 && post.pictures[0].img}
+                  fullName={`${post.user.firstName} ${post.user.lastName}`}
+                  likes={post.likes}
+                  comments={post.comments}
+                  onChange={handleCommentBoxModal}
+                  onLikeChange={handleLikeBoxaModal}
+                  onDeleteChange={handleDeletePostModal}
+                  onEditChange={handleEditPostModal}
                 />
-              )
+              );
             })}
           </div>
         </div>
         {renderCreatePostModal()}
         {renderCommentBoxModal()}
         {renderLikeBoxModal()}
+        {renderConfirmPostDeleteModal()}
+        {renderEditPostModal()}
       </div>
     </>
   );
