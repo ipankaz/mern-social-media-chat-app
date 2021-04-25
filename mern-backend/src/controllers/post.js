@@ -113,3 +113,13 @@ exports.getPosts = async (req, res) => {
 
   res.status(200).json({ posts });
 };
+
+exports.getUserPosts = async (req, res) => {
+  const {userId} = req.query
+  console.log(userId);
+  const posts = await Post.find({createdBy : userId})
+    .sort({ createdAt: -1 })
+    .exec();
+
+  res.status(200).json({ posts });
+};

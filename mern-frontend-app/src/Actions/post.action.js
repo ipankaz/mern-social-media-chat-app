@@ -28,6 +28,7 @@ export const createPost = (form) => {
     }
 }
 
+
 export const getPosts = () => {
     return async (dispatch) => {
       try {

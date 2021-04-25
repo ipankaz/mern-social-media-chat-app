@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import "./style.css";
 import WebsiteLogo from "../../../Media/profilePic.jpg";
 import { NavLink ,useHistory} from 'react-router-dom';
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import {signout} from '../../../Actions/index'
 // import { Row } from "react-bootstrap";
 
@@ -15,6 +15,7 @@ const NavBar = (props) => {
   const dispatch = useDispatch()
   const history = useHistory();
   const [navClass, setNavClass] = useState("nav");
+  const auth = useSelector(state=>state.auth)
 
   const showMenu = () => {
     if (navClass === "nav") {
@@ -82,7 +83,7 @@ const NavBar = (props) => {
                 </NavLink>
               </li>
               <li className="nav_item">
-                <NavLink to="/myprofile" className="nav_link">
+                <NavLink to={`/profile/${auth.user.username}`} className="nav_link">
                   My Profile
                 </NavLink>
               </li>

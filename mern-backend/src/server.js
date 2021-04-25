@@ -8,6 +8,7 @@ const cors = require('cors')  // to fetch backend api : cors policy
 // Routes
 const authRoutes = require('./routes/auth.routes')
 const postRoutes = require('./routes/post.routes')
+const userRoutes = require('./routes/user.routes')
 
 //enviornment variable or you can say constants
 env.config()
@@ -28,6 +29,7 @@ app.use(express.json())
 app.use('/public',express.static(path.join(__dirname,'uploads')))
 app.use('/api',authRoutes)
 app.use('/api',postRoutes)
+app.use('/api',userRoutes)
 
 app.listen(process.env.PORT,()=>{
     console.log(`server started on https://localhost:${process.env.PORT}`);

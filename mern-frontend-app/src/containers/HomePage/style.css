@@ -87,13 +87,24 @@ body{
     display:flex;
     position: relative;
 }
+.createPostModal div.addMediaModal ion-icon{
+    margin-right: 20px;
+}
 ion-icon{
     position: absolute;
     right: 0;
-    margin-right: 20px;
+    /* margin-right: 20px; */
     font-size: 1.5rem;
     cursor: pointer;
 }
+
+div.createPostModal div.mediaPreview img{
+    width: 100%;
+}
+div.createPostModal div.mediaPreview ion-icon{
+    margin-right: 20px;
+}
+
 .addMediaModal .mediaSpan{
 color: #696969;
 }

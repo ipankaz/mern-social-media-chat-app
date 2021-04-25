@@ -1,10 +1,12 @@
-import { userConstants } from "../Actions/constants"
+import { userConstants ,postConstants} from "../Actions/constants"
 
 const initState = {
     error: null,
     message: '',
     loading: false,
-    done:false
+    done:false,
+    posts:[],
+    searchedUser:[]
 }
 
 const userReducer=  (state = initState, action) => {
@@ -32,6 +34,59 @@ const userReducer=  (state = initState, action) => {
                 error: action.payload.error
             }
             break;
+            case postConstants.GET_ALL_USER_POST_SUCCESS:
+                state = {
+                    ...state,
+                    posts: action.payload.posts
+                }
+                break;
+            case postConstants.GET_ALL_USER_POST_REQUEST:
+                state = {
+                    ...state,
+                }
+                break;
+            case postConstants.GET_ALL_USER_POST_FAILURE:
+                state = {
+                    ...state,
+                   error:action.payload.error
+                }
+                break;
+            case userConstants.GET_USER_BY_FIRSTNAME_REQUEST:
+                state = {
+                    ...state,
+                }
+                break;
+            case userConstants.GET_USER_BY_FIRSTNAME_SUCCESS:
+                state = {
+                    ...state,
+                    searchedUser:action.payload.users
+                }
+                break;
+            case userConstants.GET_USER_BY_FIRSTNAME_FAILURE:
+                state = {
+                    ...state,
+                    error:action.payload.error
+                }
+                break;
+
+            case userConstants.GET_USER_BY_USERNAME_REQUEST:
+                state = {
+                    ...state,
+                }
+                break;
+            case userConstants.GET_USER_BY_USERNAME_SUCCESS:
+                state = {
+                    ...state,
+                    searchedUser:action.payload.users
+                }
+                break;
+            case userConstants.GET_USER_BY_USERNAME_FAILURE:
+                state = {
+                    ...state,
+                    error:action.payload.error
+                }
+                break;
+
             default :state={...state}
     }
 

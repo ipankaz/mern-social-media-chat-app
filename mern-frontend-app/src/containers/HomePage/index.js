@@ -9,8 +9,9 @@ import {
   createPost,
   deletePostById,
   getPosts,
-  editPostById,
+  editPostById
 } from "../../Actions/post.action";
+import {getUserPosts} from '../../Actions/user.action'
 import PostFeed from "../../components/UI/PostFeed";
 import CommentBox from "../../components/UI/CommentBox";
 import LikeBox from "../../components/UI/LikeBox";
@@ -38,14 +39,21 @@ const HomePage = (props) => {
   const dispatch = useDispatch();
   const auth = useSelector((state) => state.auth);
 
+  const pathname = window.location.pathname;
+  
   useEffect(() => {
     if (auth.authenticate && data) {
       dispatch(getPosts());
+      if(props.user){
+        dispatch(getUserPosts(props.user._id))
+      }
       data = false;
     }
-  }, [auth.authenticate, dispatch]);
+  }, [auth.authenticate, dispatch,props.user]);
 
   const allPosts = useSelector((state) => state.post);
+  const userPosts = useSelector((state) => state.user);
+  const decidedPosts = pathname==="/" ? allPosts : userPosts;
 
   const handleShow = () => {
     setShow(true);
@@ -54,6 +62,7 @@ const HomePage = (props) => {
     setShow(false);
     setMediaPreview(null);
     setMediaError(false);
+    setDescription("")
   };
 
   const handleModalDescription = (event) => {
@@ -147,6 +156,7 @@ const HomePage = (props) => {
 
   const handleCloseEditPostModal = () => {
     setEditPost(false);
+    setDescription("")
   };
 
   const editPostAction = () => {
@@ -217,7 +227,7 @@ const HomePage = (props) => {
                 <>
                   <img src={mediaPreview} alt="selected media"></img>
                   <div className="removeMediaPreview">
-                    {" "}
+                    
                     <ion-icon
                       onClick={() => setMediaPreview(null)}
                       name="close-outline"
@@ -408,21 +418,23 @@ const HomePage = (props) => {
 
   return (
     <>
-      <NavBar></NavBar>
+      {pathname==="/" && <NavBar></NavBar>}
       <div className="container-1">
         <div className="feed-1">
+          {!props.differentUser &&
           <div className="createPostSection-1">
-            <div className="profilePic-1">
-              <img src={profilePic} alt="profile pic"></img>
-            </div>
-            <div className="createBtn">
-              <p onClick={handleShow}>Write something here...</p>
-            </div>
+          <div className="profilePic-1">
+            <img src={profilePic} alt="profile pic"></img>
           </div>
+          <div className="createBtn">
+            <p onClick={handleShow}>Write something here...</p>
+          </div>
+        </div>
+          }
           <div className="posts-1">
             {/* All Post Feed goes here */}
 
-            {allPosts.posts.map((post, index) => {
+            { decidedPosts.posts.map((post, index) => {
               return (
                 <PostFeed
                   post={post}

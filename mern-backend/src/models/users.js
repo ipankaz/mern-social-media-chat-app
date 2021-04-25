@@ -21,8 +21,7 @@ const userSchema = new mongoose.Schema({
         required:true,
         trim:true,
         unique:true,
-        lowercase:true,
-        // index:true
+        lowercase:true
     },
     email : {
         type:String,
@@ -48,7 +47,20 @@ const userSchema = new mongoose.Schema({
     },
     profilePicture :{
         type:String
-    }
+    },
+    coverPicture :{
+        type:String
+    },
+    followers:[{
+        userId : {type:mongoose.Schema.Types.ObjectId , ref:'User'}, 
+        user:Object
+        }],
+    following:[{
+        userId : {type:mongoose.Schema.Types.ObjectId , ref:'User'}, 
+        user:Object
+        }]
+
+    
 },{timestamps:true})
 
 // userSchema.virtual('password').set(function(password){

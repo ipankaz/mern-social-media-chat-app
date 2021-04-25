@@ -6,6 +6,7 @@ import HomePage from './containers/HomePage';
 import LoginSignup from './containers/LoginSignup';
 import { useDispatch , useSelector} from "react-redux";
 import {isUserLoggedIn} from './Actions/auth.action'
+import ProfilePage from './containers/ProfilePage';
 
 
 function App() {
@@ -32,6 +33,7 @@ function App() {
         <Switch>
         <PrivateRoute exact path="/" component={HomePage}></PrivateRoute>
         <Route path="/login" component={LoginSignup}></Route>
+        <Route path={`/profile/:${auth.user.username}`} component={ProfilePage}></Route>
         </Switch>
       </Router>
     </div>
