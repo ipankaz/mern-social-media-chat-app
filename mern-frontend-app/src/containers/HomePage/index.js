@@ -81,7 +81,6 @@ const HomePage = (props) => {
       form.append("pictures", picture);
     });
     
-    console.log(form);
     dispatch(createPost(form));
     setDescription("");
     setPostPictures([]);

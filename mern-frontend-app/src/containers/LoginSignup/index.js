@@ -4,9 +4,9 @@ import playImg from "../../Media/play.svg";
 import launchImg from "../../Media/launch.svg";
 import Input from "../../components/UI/Input";
 import { useDispatch , useSelector} from "react-redux";
-import {Redirect} from 'react-router-dom'
+import { Redirect, useHistory} from 'react-router-dom'
 import authAction from "../../Actions/auth.action";
-import { signup } from "../../Actions/user.action";
+// import { signup } from "../../Actions/user.action";
 
 /**
  * @author
@@ -23,6 +23,7 @@ const LoginSignup = (props) => {
   const [contactNumber, setContactNumber] = useState("");
 
   const dispatch = useDispatch();
+  const history = useHistory()
   const auth = useSelector(state=>state.auth);
   const user = useSelector(state=>state.user);
 
@@ -31,12 +32,10 @@ const LoginSignup = (props) => {
   }
 
   const signUpBtn = () => {
-    console.log("signup");
     setMode("container-123 sign-up-mode-123");
   };
 
   const signInBtn = () => {
-    console.log("signin");
     setMode("container-123");
   };
 
@@ -50,8 +49,10 @@ const LoginSignup = (props) => {
       contactNumber,
       password,
     };
-    dispatch(signup(signupForm))
-    setMode("container-123");
+
+   history.push("/login/complete",{form:signupForm})
+    // dispatch(signup(signupForm))
+    // setMode("container-123");
   };
 
   const submitSigninBtn = (event) => {

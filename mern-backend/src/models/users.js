@@ -46,7 +46,7 @@ const userSchema = new mongoose.Schema({
         required:true
     },
     profilePicture :{
-        type:String
+        img:{type:String}
     },
     coverPicture :{
         type:String
@@ -58,7 +58,17 @@ const userSchema = new mongoose.Schema({
     following:[{
         userId : {type:mongoose.Schema.Types.ObjectId , ref:'User'}, 
         user:Object
-        }]
+        }],
+        bio:{
+            type:String
+        },
+        dob:{
+            type:Date,
+        },
+        gender:{
+            type:String,
+            enum:['Male','Female','Others'],
+        }
 
     
 },{timestamps:true})

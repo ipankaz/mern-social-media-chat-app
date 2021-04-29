@@ -12,7 +12,7 @@ const LikeBox = (props) => {
            <div className="userProfilePic">
                <img src={props.profilePic} alt="profile"></img>
            </div>
-           <span className="username">{props.user.fullName}</span>
+           <span className="username">{props.user.firstName} {props.user.lastName}</span>
        </div>
   
    )

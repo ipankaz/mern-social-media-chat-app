@@ -2,6 +2,8 @@ import React, { useEffect, useState} from "react";
 import { useSelector} from "react-redux";
 import { NavLink } from "react-router-dom";
 import HomePage from "../../containers/HomePage";
+import { generatePublicUrl } from "../../urlConfig";
+import EditProfile from "../UI/EditProfile";
 
 import "./style.css";
 /**
@@ -57,7 +59,7 @@ const BannerBox = (props) => {
               </div>
               <div className="profile-photo">
                 <div className="profile-icon">
-                  <img src={props.profilePic} alt="profile"></img>
+                  <img src={props.user ? generatePublicUrl(props.user.profilePicture.img) : null} alt="profile"></img>
                   {!differentUser && 
                   <div className="change-profile-pic-icon">
                   <ion-icon name="camera-outline"></ion-icon>
@@ -81,7 +83,7 @@ const BannerBox = (props) => {
             <span>{props.user.firstName} {props.user.lastName}</span>
           </div>
           <div className="user-bio">
-            <p>Today make yourself a priority</p>
+            <p>{props.user.bio}</p>
           </div>
           <div className="mini-bar">
             <div className="mini-links">
@@ -97,8 +99,8 @@ const BannerBox = (props) => {
                   </NavLink>
                 </li>
                 <li className={`mini-bar-item ${active3}`}>
-                  <NavLink to={`/profile/${props.user.username}/about`}>
-                    About
+                  <NavLink to={`/profile/${props.user.username}/following`}>
+                    Following (90)
                   </NavLink>
                 </li>
                 {!differentUser &&
@@ -118,6 +120,9 @@ const BannerBox = (props) => {
           user={props.user}
           differentUser={differentUser}
          ></HomePage>}
+         {active4==="active" &&
+         <EditProfile></EditProfile>
+         }
       </div>
     </>
   );

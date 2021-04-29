@@ -10,6 +10,7 @@ exports.getUsers = async (req, res) => {
   
     res.status(200).json({ users });
   };
+
 exports.getUsersByUsername = async (req, res) => {
     const {username} = req.query
     // 'i' is used for ignoring case sensitive
@@ -19,4 +20,27 @@ exports.getUsersByUsername = async (req, res) => {
       .exec();
   
     res.status(200).json({ users });
+  };
+
+exports.updateUserProfile = async (req, res) => {
+    const {userId} = req.query
+    const {updateUser} = req.body
+   
+    if(userId){
+      const updatedUser = await User.findOneAndUpdate({ _id: userId }, {
+        $set:{
+          firstName:updateUser.firstName,
+          lastName:updateUser.lastName,
+          username:updateUser.username,
+          bio:updateUser.bio,
+          contactNumber:updateUser.contactNumber
+        }
+      }, {
+        new: true,
+      }).select("_id firstName lastName username email role fullName contactNumber profilePicture gender bio dob");
+      res.status(201).json({ updatedUser });
+    }else{
+      res.status(400).json({error:"params required"})
+    }
+   
   };

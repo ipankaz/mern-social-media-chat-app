@@ -1,13 +1,18 @@
-import {authConstants} from '../Actions/constants'
+import {authConstants, userConstants} from '../Actions/constants'
 const initAuthState = { 
     token: null,
     user: {
+        _id:'',
         firstName: '',
         lastName: '',
         email: '',
         picture: '',
         username:'',
-        contactNumber:''
+        contactNumber:'',
+        gender:'',
+        bio:'',
+        profilePicture:'',
+        dob:null
 
     },
     authenticate: false,
@@ -19,9 +24,8 @@ const initAuthState = {
 
 const authReducer = (state = initAuthState,action)=>{
     console.log(action);
-    
     switch(action.type){
-
+       
         case authConstants.LOGIN_REQUEST : 
           state = {
             ...state,
@@ -55,10 +59,23 @@ const authReducer = (state = initAuthState,action)=>{
                 loading:false
             }
             break
+        case userConstants.UPDATE_USER_PROFILE_REQUEST:
+            state = {
+                ...state,
+            }
+            break
+        case userConstants.UPDATE_USER_PROFILE_SUCCESS:
+            state = {
+                ...state,
+                user:action.payload.updatedUser,
+            }
+            break;
+        case userConstants.UPDATE_USER_PROFILE_FAILURE:
+            state = {
+                ...state
+            }
+            break
         default :state={...state}
-        
-
-         
     }
     return state
 }

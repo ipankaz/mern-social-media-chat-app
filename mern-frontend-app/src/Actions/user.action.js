@@ -1,15 +1,13 @@
 import {userConstants,postConstants} from './constants'
 import axios from '../Helpers/axios'
 
-export const signup = (user)=>{
-     console.log(user)
+export const signup = (form)=>{
+     console.log(form)
     return async (dispatch)=>{
         dispatch({
             type:userConstants.USER_REGISTER_REQUEST
         })
-        const res = await axios.post('signup',{
-           ...user
-        })
+        const res = await axios.post('signup',form)
         if(res.status===201){
             const {message}=res.data
             dispatch({
@@ -40,7 +38,6 @@ export const getUserPosts = (userId) => {
         const res = await axios.get(`post/getuserposts?userId=${userId}`);
         if (res.status === 200) {
           const { posts } = res.data;
-          console.log(posts);
           dispatch({
             type: postConstants.GET_ALL_USER_POST_SUCCESS,
             payload: { posts},
@@ -86,6 +83,27 @@ export const getUserByUserName = (username) => {
           });
         } else {
           dispatch({ type: userConstants.GET_USER_BY_USERNAME_FAILURE });
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    }
+  };
+
+export const updateUserProfile = (form) => {
+    return async (dispatch) => {
+      try {
+        dispatch({ type: userConstants.UPDATE_USER_PROFILE_REQUEST });
+        const res = await axios.post(`user/update?userId=${form.userId}`,{updateUser:form.updateUser});
+        if (res.status === 201) {
+          const { updatedUser} = res.data;
+          localStorage.setItem('user',JSON.stringify(updatedUser))
+          dispatch({
+            type: userConstants.UPDATE_USER_PROFILE_SUCCESS,
+            payload: { updatedUser:updatedUser},
+          });
+        } else {
+          dispatch({ type: userConstants.UPDATE_USER_PROFILE_FAILURE });
         }
       } catch (error) {
         console.log(error);

@@ -7,6 +7,7 @@ import LoginSignup from './containers/LoginSignup';
 import { useDispatch , useSelector} from "react-redux";
 import {isUserLoggedIn} from './Actions/auth.action'
 import ProfilePage from './containers/ProfilePage';
+import SignupProcess from './containers/SignupProcess';
 
 
 function App() {
@@ -32,7 +33,8 @@ function App() {
       <Router>
         <Switch>
         <PrivateRoute exact path="/" component={HomePage}></PrivateRoute>
-        <Route path="/login" component={LoginSignup}></Route>
+        <Route exact path="/login" component={LoginSignup}></Route>
+        <Route path="/login/complete" component={SignupProcess}></Route>
         <Route path={`/profile/:${auth.user.username}`} component={ProfilePage}></Route>
         </Switch>
       </Router>

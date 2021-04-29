@@ -10,8 +10,16 @@ exports.signup =  (req, res) => {
         message: "User Already registered",
       });
     }
-
-    const { firstName, lastName, email, password, username,contactNumber } = req.body;
+    let profilePicture = {
+      img:""
+    }
+    
+    if(req.files.length>0){
+       profilePicture =   {
+        img:req.files[0].filename
+      }
+    }
+    const { firstName, lastName, email, password, username,contactNumber,dob,gender,bio } = req.body;
     const hash_password = await bcrypt.hash(password,10)
     const _user = new User({
       firstName,
@@ -19,7 +27,11 @@ exports.signup =  (req, res) => {
       email,
       hash_password,
       username,
-      contactNumber
+      contactNumber,
+      profilePicture,
+      dob,
+      gender,
+      bio
     });
     _user.save((error, data) => {
       if (error) {
@@ -43,7 +55,7 @@ exports.signin = (req, res) => {
       return res.status(400).json({ error });
     }
     if (user) {
-      const { _id, firstName, lastName, email, role, fullName , username,contactNumber,profilePicture} = user;
+      const { _id, firstName, lastName, email, role, fullName , username,contactNumber,profilePicture,gender,bio,dob} = user;
       const passwordValidation = await user.authenticate(req.body.password);
       if (passwordValidation && user.role==="user") {
         const token = jwt.sign({ _id: user._id ,role:user.role}, process.env.SECRET_KEY, {
@@ -51,7 +63,7 @@ exports.signin = (req, res) => {
         });
         res.status(200).json({
           token,
-          user: { _id, firstName, lastName, email, role, fullName ,username,contactNumber,profilePicture},
+          user: { _id, firstName, lastName, email, role, fullName ,username,contactNumber,profilePicture,gender,bio,dob},
         });
       } else {
         return res.status(400).json({

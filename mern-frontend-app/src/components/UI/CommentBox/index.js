@@ -40,7 +40,7 @@ const CommentBox = (props) => {
        <div className="userCommentSection">
            <div className="userCommentHeader">
              <div className="username">
-               <span>{props.user.fullName}</span>
+               <span>{props.user.firstName} {props.user.lastName}</span>
              </div>
              {verifiedUser && 
              <div className="userCommentDeleteIcon">
