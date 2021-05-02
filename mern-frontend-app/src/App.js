@@ -24,7 +24,6 @@ function App() {
       // dispatch(getInitialData());
     }
     
-    
   },[auth.authenticate,dispatch])
 
 
@@ -35,7 +34,7 @@ function App() {
         <PrivateRoute exact path="/" component={HomePage}></PrivateRoute>
         <Route exact path="/login" component={LoginSignup}></Route>
         <Route path="/login/complete" component={SignupProcess}></Route>
-        <Route path={`/profile/:${auth.user.username}`} component={ProfilePage}></Route>
+        <Route path={`/profile/:${ auth.user && auth.user.username}`} component={ProfilePage}></Route>
         </Switch>
       </Router>
     </div>

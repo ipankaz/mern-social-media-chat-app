@@ -49,7 +49,7 @@ const userSchema = new mongoose.Schema({
         img:{type:String}
     },
     coverPicture :{
-        type:String
+        img:{type:String}
     },
     followers:[{
         userId : {type:mongoose.Schema.Types.ObjectId , ref:'User'}, 
@@ -57,7 +57,7 @@ const userSchema = new mongoose.Schema({
         }],
     following:[{
         userId : {type:mongoose.Schema.Types.ObjectId , ref:'User'}, 
-        user:Object
+        user:Object,
         }],
         bio:{
             type:String

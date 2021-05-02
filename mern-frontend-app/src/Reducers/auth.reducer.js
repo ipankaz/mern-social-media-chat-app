@@ -12,7 +12,10 @@ const initAuthState = {
         gender:'',
         bio:'',
         profilePicture:'',
-        dob:null
+        dob:null,
+        coverPicture:'',
+        followers:[],
+        following:[]
 
     },
     authenticate: false,
@@ -75,6 +78,57 @@ const authReducer = (state = initAuthState,action)=>{
                 ...state
             }
             break
+        case userConstants.UPDATE_USER_PROFILE_PICTURE_REQUEST:
+            state = {
+                ...state,
+            }
+            break
+        case userConstants.UPDATE_USER_PROFILE_PICTURE_SUCCESS:
+            state = {
+                ...state,
+                user:action.payload.updatedUser,
+            }
+            break;
+        case userConstants.UPDATE_USER_PROFILE_PICTURE_FAILURE:
+            state = {
+                ...state
+            }
+            break
+
+        case userConstants.UPDATE_USER_COVER_PICTURE_REQUEST:
+            state = {
+                ...state,
+            }
+            break
+        case userConstants.UPDATE_USER_COVER_PICTURE_SUCCESS:
+            state = {
+                ...state,
+                user:action.payload.updatedUser,
+            }
+            break;
+        case userConstants.UPDATE_USER_COVER_PICTURE_FAILURE:
+            state = {
+                ...state
+            }
+            break
+
+        case userConstants.ADD_USER_PUBLICITY_REQUEST:
+            state = {
+                ...state,
+            }
+            break
+        case userConstants.ADD_USER_PUBLICITY_SUCCESS:
+            state = {
+                ...state,
+                user:action.payload.updatedUser,
+            }
+            break;
+        case userConstants.ADD_USER_PUBLICITY_FAILURE:
+            state = {
+                ...state
+            }
+            break
+            
         default :state={...state}
     }
     return state

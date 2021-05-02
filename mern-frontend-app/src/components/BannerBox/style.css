@@ -71,6 +71,18 @@ div.banner-box {
   div.banner-box
     div.cover-photo-blur
     div.profile-photo
+    input{
+      display: none;
+    }
+
+    div.banner-box div.cover-photo-blur div.profile-photo label{
+      margin-bottom: 0;
+      display:block;
+    }
+
+  div.banner-box
+    div.cover-photo-blur
+    div.profile-photo
     div.change-profile-pic-icon
     ion-icon {
     background-color: white;
@@ -94,6 +106,31 @@ div.banner-box {
     font-size: 1rem;
     color :#4E4E50;
   }
+ 
+  div.banner-box div.cover-photo div.save-cover {
+    position: absolute;
+    bottom: 0;
+    right: 15px;
+    z-index: 7;
+    margin-bottom: 60px;
+    box-sizing: border-box;
+    display: flex;
+    border-radius: 5px;
+    background-color: #4BB543;
+  }
+  div.banner-box div.cover-photo div.save-cover ion-icon {
+    position: relative;
+    margin-top: 5px;
+    margin-right: 10px;
+    color: #ffffff;
+  }
+  div.banner-box div.cover-photo div.save-cover span {
+    padding: 6px 8px 6px 8px;
+    outline: none;
+    cursor: pointer;
+    z-index: 90;
+    color: #ffffff;
+  }
   div.banner-box div.cover-photo div.change-cover {
     position: absolute;
     bottom: 0;
@@ -106,16 +143,27 @@ div.banner-box {
     border-radius: 5px;
     background-color: #ffffff;
   }
+  div.banner-box div.cover-photo div.change-cover input{
+    display: none;
+  }
+  div.banner-box div.cover-photo div.change-cover label{
+    margin-bottom: 0;
+  }
+  div.banner-box div.cover-photo div.change-cover>label{
+   align-self: center;
+  }
+
   div.banner-box div.cover-photo div.change-cover ion-icon {
     position: relative;
     margin-top: 5px;
     margin-right: 10px;
   }
   div.banner-box div.cover-photo div.change-cover span {
-    padding: 6px 8px 6px 8px;
+    padding: 3px 8px 3px 8px;
     outline: none;
     cursor: pointer;
     z-index: 90;
+   
   }
 
   div.banner-box div.follow-unfollow{
@@ -128,13 +176,14 @@ div.banner-box {
     z-index: 7;
     box-sizing: border-box;
     display: flex;
-    border: 1px solid black;
-    border-radius: 5px;
+    /* border: 1px solid black; */
+    border-radius: 25px;
     background-color: #ffffff;
     position: relative;
     /* display: inline-block; */
     width: 95px;
     margin: 0 auto;
+    
   }
 
   div.banner-box div.follow-unfollow div.follow span{
@@ -145,8 +194,9 @@ div.banner-box {
   }
   div.banner-box div.follow-unfollow div.follow div.follow-icon ion-icon{
     position: absolute;
-    right: 5px;
-    margin-top: 4px;
+    right: 7px;
+    margin-top: 6px;
+    font-size: 20px;
   }
 
   div.banner-box div.mini-bar{
@@ -170,6 +220,16 @@ div.banner-box {
   div.banner-box div.mini-bar div.mini-links ul li.active a{
       color: #007bff;
   }
+
+   
+  .my-modal div.modal-body div.profile-preview img{
+    width: 100%;
+  }
+  .my-modal div.modal-body div.profile-preview span{
+    color: red;
+    width: 100%;
+  }
+  
   
   @media (max-width: 500px){
     div.banner-box div.cover-photo-blur div.username {
@@ -187,6 +247,7 @@ div.banner-box {
   div.banner-box div.cover-photo-blur div.profile-photo img {
     width: 100px;
   }
+  
   /* div.banner-box div.cover-photo-blur > img {
     height: 500px;
   } */

@@ -6,7 +6,8 @@ const initState = {
     loading: false,
     done:false,
     posts:[],
-    searchedUser:[]
+    searchedUser:[],
+    searchedQuery:[]
 }
 
 const userReducer=  (state = initState, action) => {
@@ -58,7 +59,7 @@ const userReducer=  (state = initState, action) => {
             case userConstants.GET_USER_BY_FIRSTNAME_SUCCESS:
                 state = {
                     ...state,
-                    searchedUser:action.payload.users
+                    searchedQuery:action.payload.users
                 }
                 break;
             case userConstants.GET_USER_BY_FIRSTNAME_FAILURE:

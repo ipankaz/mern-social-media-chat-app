@@ -55,7 +55,7 @@ exports.signin = (req, res) => {
       return res.status(400).json({ error });
     }
     if (user) {
-      const { _id, firstName, lastName, email, role, fullName , username,contactNumber,profilePicture,gender,bio,dob} = user;
+      const { _id, firstName, lastName, email, role, fullName , username,contactNumber,profilePicture,gender,bio,dob ,coverPicture , followers , following} = user;
       const passwordValidation = await user.authenticate(req.body.password);
       if (passwordValidation && user.role==="user") {
         const token = jwt.sign({ _id: user._id ,role:user.role}, process.env.SECRET_KEY, {
@@ -63,7 +63,7 @@ exports.signin = (req, res) => {
         });
         res.status(200).json({
           token,
-          user: { _id, firstName, lastName, email, role, fullName ,username,contactNumber,profilePicture,gender,bio,dob},
+          user: { _id, firstName, lastName, email, role, fullName ,username,contactNumber,profilePicture,gender,bio,dob,coverPicture , followers , following},
         });
       } else {
         return res.status(400).json({

@@ -149,6 +149,11 @@
   .nav_name {
     display: block;
     color: var(--white-color);
+    text-decoration: none;
+  }
+  .nav_name:hover{
+    text-decoration: none;
+    color: var(--first-color);
   }
   .nav_profession {
     font-size: var(--small-font-size);
@@ -268,10 +273,12 @@
     .nav_link {
       padding: .5rem .8rem;
       border-radius: .25rem;
+      text-decoration: none;
     }
     .nav_link:hover {
       background-color: var(--first-color);
       color: var(--white-color);
+      text-decoration: none;
     }
     .active-1 {
       background-color: var(--first-color);
@@ -312,6 +319,65 @@
       margin-right: auto;
     }
     
+  }
+
+  /* Search user modal css  */
+
+  .search-container{
+    width: 100%;
+  }
+  .search-container .search-input{
+    position: relative;
+  }
+  .search-container .search-input input{
+    width: 100%;
+    outline: none;
+    background-color: transparent;
+    border: none;
+    box-shadow:  9px 9px 18px #9b9b9b,
+             -9px -9px 18px #ffffff;
+    padding: 15px 25px;
+    font-size: 15px;
+    border-radius: 30px;
+  }
+  .search-container .search-input .search-icon ion-icon{
+    position: absolute; 
+     top: 15px;
+    right: 20px;
+  }
+
+  .search-container .search-result{
+    width: 100%;
+    margin: 30px auto;
+    box-shadow:  9px 9px 18px #9b9b9b,
+    -9px -9px 18px #ffffff;
+    border-radius: 10px;
+  }
+
+  .search-container .search-result .search-item{
+    display: flex;
+    padding: 15px;
+    box-shadow:  4px 4px 10px #9b9b9b,
+    -4px -4px 10px #ffffff;
+    border-radius: 10px;
+    margin-bottom: 20px;
+    position: relative;
+  }
+  .search-container .search-result .search-item .profile-picture-0 img{
+      width: 50px;
+      border-radius: 50%;
+  }
+  .search-container .search-result .search-item .user-name-0{
+      align-self: center;
+  }
+  
+  .search-container .search-result .search-item .user-name-0 a{
+      text-decoration: none;
+    
+  }
+  .search-container .search-result .search-item .user-name-0 span{
+      color: rgb(70, 66, 66);
+      padding: 10px;
   }
   
   

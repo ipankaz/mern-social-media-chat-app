@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useHistory } from "react-router";
+// import { useHistory } from "react-router";
 import { updateUserProfile } from "../../../Actions";
 import "./style.css";
 /**
@@ -11,7 +11,7 @@ import "./style.css";
 const EditProfile = (props) => {
   const user = useSelector((state) => state.auth.user);
   const dispatch = useDispatch()
-  const history = useHistory()
+  // const history = useHistory()
   const [firstName, setFirstName] = useState(user.firstName);
   const [lastName, setLastName] = useState(user.lastName);
   const [username, setUsername] = useState(user.username);
@@ -31,7 +31,7 @@ const EditProfile = (props) => {
           userId:user._id
       }
      dispatch(updateUserProfile(form))
-     history.push("/login")
+    //  history.push("/login")
       
   }
 
