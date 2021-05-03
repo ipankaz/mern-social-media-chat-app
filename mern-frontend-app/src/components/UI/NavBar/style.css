@@ -84,6 +84,7 @@
     font-size: 1.5rem;
     color: var(--white-color);
     cursor: pointer;
+    margin-right: 20px;
   }
   span.nav_signout-span{
     cursor: pointer;
@@ -171,6 +172,7 @@
   
   .nav_link {
     color: var(--white-color);
+    text-decoration: none;
   }
   
   .nav_social {
@@ -378,6 +380,13 @@
   .search-container .search-result .search-item .user-name-0 span{
       color: rgb(70, 66, 66);
       padding: 10px;
+  }
+  .search-container .search-result .no-result-slogan{
+    box-shadow:  4px 4px 10px #9b9b9b,
+    -4px -4px 10px #ffffff;
+    border-radius: 5px;
+    text-align: center;
+    padding: 20px;
   }
   
   

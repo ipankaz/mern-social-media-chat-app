@@ -13,6 +13,11 @@ div.userLikeBox span{
     font-size: 0.9rem;
     cursor: pointer;
     font-weight: 500;
+    color: rgb(54, 49, 49);
+    
+}
+div.userLikeBox a:hover{
+   text-decoration: none;
 }
 
 @media (max-width:500px){
@@ -23,6 +28,7 @@ div.userLikeBox span{
 
     div.userLikeBox span{
         font-size: 0.7rem;
+
     }
 
     div.userLikeBox{

@@ -30,7 +30,13 @@ div.userCommentBox div.userCommentSection .username span{
     font-size: 0.9rem;
     cursor: pointer;
     font-weight: 500;
+    color: rgb(59, 55, 55);
 }
+
+div.userCommentBox div.userCommentSection .username a{
+  text-decoration: none;
+}
+
 div.userCommentBox div.userCommentSection .userComment{
   margin-top: 5px;
 }
@@ -39,9 +45,6 @@ div.userCommentBox div.userCommentSection .userComment p{
   font-size: 0.7rem;
   font-weight: 400;
   word-break: break-all;
-}
-div.userCommentHeader{
-   
 }
 
 div.userCommentBox div.userCommentSection div.userCommentDeleteIcon ion-icon{

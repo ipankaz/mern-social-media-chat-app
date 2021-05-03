@@ -12,7 +12,7 @@ exports.createPost = async (req, res, next) => {
   }
 
   const user = await User.findOne({ _id: req.user._id }).select(
-    "_id firstName lastName email username contactNumber"
+    "_id firstName lastName email username contactNumber profilePicture coverPicture"
   );
 
   const _post = {

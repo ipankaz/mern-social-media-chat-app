@@ -36,7 +36,7 @@ const ProfilePage = (props) => {
     <div className="profile-page">
       <NavBar></NavBar>
       <BannerBox
-        user={user.searchedUser.length>0 && user.searchedUser[0]}
+        user={user.searchedUser.length>0 ? user.searchedUser[0] : null}
         coverPic = {coverPhoto}
         profilePic={profilePic}
         posts={user.posts.length>0 && user.posts}

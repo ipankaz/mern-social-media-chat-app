@@ -134,6 +134,20 @@ color: #696969;
       margin-top:15px;
       
   }
+
+  div.no-post-slogan{
+   margin: 50px 0;
+   padding: 20px;
+   text-align: center;
+   border-radius: 8px;
+   box-sizing: border-box;
+   box-shadow:  9px 9px 18px #9b9b9b,
+            -9px -9px 18px #ffffff;
+  }
+  div.no-post-slogan span{
+      font-size: 1.5rem;
+     color: #696969;
+  }
   .my-modal .modal-content {
     background-color: #e0e0e0;
   }

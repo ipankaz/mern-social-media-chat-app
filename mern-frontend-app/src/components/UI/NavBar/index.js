@@ -1,12 +1,13 @@
 import React, { useState } from "react";
 import "./style.css";
-import WebsiteLogo from "../../../Media/profilePic.jpg";
+import WebsiteLogo from "../../../Media/logo.png";
 import { NavLink, useHistory } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { getUserByFirstName, signout } from "../../../Actions/index";
 import NewModal from "../Modal";
 import { Container } from "react-bootstrap";
 import userMale from "../../../Media/user-male.gif";
+import { generatePublicUrl } from "../../../urlConfig";
 
 /**
  * @author
@@ -41,6 +42,8 @@ const NavBar = (props) => {
 
   const handleClose = () => {
     setShow(false);
+    setSearchQuery("")
+    dispatch(getUserByFirstName("1"));
   };
 
   const handleSearchQuery = (e) => {
@@ -80,17 +83,17 @@ const NavBar = (props) => {
                 searchedUser.map((element, index) => (
                   <div key={index} className="search-item">
                     <div className="profile-picture-0">
-                      <a href="/">
-                        <img src={userMale} alt="profile"></img>
+                      <a href={`/profile/${element.username}`}>
+                        <img src={element.profilePicture && element.profilePicture.img!=="" ? generatePublicUrl(element.profilePicture.img) : userMale} alt="profile"></img>
                       </a>
                     </div>
                     <div className="user-name-0">
-                      <a href="/">
+                      <a href={`/profile/${element.username}`}>
                         <span>{element.firstName} {element.lastName}</span>
                       </a>
                     </div>
                   </div>
-                )) : <span> No Results</span>}
+                )) : <div className="no-result-slogan"><span> No Results</span></div>}
             </div>
           </div>
         </Container>
@@ -143,12 +146,12 @@ const NavBar = (props) => {
               </li> */}
 
                 <li className="nav_item">
-                  <NavLink
-                    to={`/profile/${auth.user && auth.user.username}`}
-                    className="nav_link"
-                  >
-                    My Profile
-                  </NavLink>
+                  {/* <NavLink to="/search" className="nav_link"> */}
+                  <span onClick={() => setShow(true)} className="nav_link">
+                    Search
+                  </span>
+                  {/* </NavLink> */}
+                  
                 </li>
                 <li className="nav_item">
                   <NavLink to="/about" className="nav_link">
@@ -156,11 +159,12 @@ const NavBar = (props) => {
                   </NavLink>
                 </li>
                 <li className="nav_item">
-                  {/* <NavLink to="/search" className="nav_link"> */}
-                  <span onClick={() => setShow(true)} className="nav_link">
-                    Search
-                  </span>
-                  {/* </NavLink> */}
+                <NavLink
+                    to={`/profile/${auth.user && auth.user.username}`}
+                    className="nav_link"
+                  >
+                    My Profile
+                  </NavLink>
                 </li>
               </ul>
             </div>
@@ -179,8 +183,9 @@ const NavBar = (props) => {
             </div>
           </div>
         </nav>
-        {renderSearchUserModal()}
+       
       </header>
+      {renderSearchUserModal()}
       {/* <Row>{props.children}</Row> */}
     </>
   );

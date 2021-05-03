@@ -34,10 +34,10 @@ const BannerBox = (props) => {
   const [followUser,setFollowUser] = useState(true)
 
   useEffect(() => {
-    if (auth.user._id === props.user._id) {
+    if (props.user!==null && auth.user._id === props.user._id) {
       setDifferentUser(false);
     }
-  }, [auth.user._id, props.user._id]);
+  }, [auth.user._id, props.user]);
 
   const pathname = window.location.pathname;
 
@@ -46,23 +46,23 @@ const BannerBox = (props) => {
   let active3 = "";
   let active4 = "";
 
-  if (pathname === `/profile/${props.user.username}`) {
+  if (props.user && pathname === `/profile/${props.user.username}`) {
     active1 = "active";
-  } else if (pathname === `/profile/${props.user.username}/followers`) {
+  } else if (props.user && pathname === `/profile/${props.user.username}/followers`) {
     active2 = "active";
-  } else if (pathname === `/profile/${props.user.username}/following`) {
+  } else if (props.user && pathname === `/profile/${props.user.username}/following`) {
     active3 = "active";
-  } else if (pathname === `/profile/${props.user.username}/edit`) {
+  } else if (props.user && pathname === `/profile/${props.user.username}/edit`) {
     active4 = "active";
   }
 
 useEffect(()=>{
-  auth.user.following.forEach(following => {
-    if(following.userId===props.user._id){
+  auth.user.following && auth.user.following.forEach(following => {
+    if(props.user && following.userId===props.user._id){
       setFollowUser(false)
     }
 });
-},[auth.user.following,props.user._id])
+},[auth.user.following,props.user])
 
   const handleChangeCoverPictureUpload = (event) => {
     const selected = event.target.files[0];
@@ -163,156 +163,161 @@ useEffect(()=>{
 
   return (
     <>
-      <div className="banner-box">
-        <div className="cover-photo-blur">
-          <img
-            src={
-              coverPicturePreview !== null
-                ? coverPicturePreview
-                : props.user.coverPicture && props.user.coverPicture.img !== ""
-                ? generatePublicUrl(props.user.coverPicture.img)
-                : userCoverPicture
-            }
-            alt="cover"
-          ></img>
+      {props.user ?
+    <div className="banner-box">
+    <div className="cover-photo-blur">
+      <img
+        src={
+          coverPicturePreview !== null
+            ? coverPicturePreview
+            : props.user.coverPicture && props.user.coverPicture.img !== ""
+            ? generatePublicUrl(props.user.coverPicture.img)
+            : userCoverPicture
+        }
+        alt="cover"
+      ></img>
 
-          <div className="profile-cover-photo">
-            <div className="cover-photo">
-              <div className="cover-pic">
-                <img
-                  src={
-                    coverPicturePreview !== null
-                      ? coverPicturePreview
-                      : props.user.coverPicture &&
-                        props.user.coverPicture.img !== ""
-                      ? generatePublicUrl(props.user.coverPicture.img)
-                      : userCoverPicture
-                  }
-                  alt="cover"
-                ></img>
-                {!differentUser && (
-                  <div className="change-cover">
-                    <label htmlFor="change-cover">
-                      <span>Change Cover Photo</span>
-                    </label>
-                    <label htmlFor="change-cover">
-                      <div>
-                        <ion-icon name="camera"></ion-icon>
-                      </div>
-                    </label>
-                    <input
-                      onChange={handleChangeCoverPictureUpload}
-                      id="change-cover"
-                      type="file"
-                    ></input>
-                  </div>
-                )}
-                {coverPicturePreview && (
-                  <div className="save-cover">
-                    <span onClick={submitChangeCoverPicture}>Save Changes</span>
-                    <div>
-                      <ion-icon
-                        onClick={submitChangeCoverPicture}
-                        name="checkmark"
-                      ></ion-icon>
-                    </div>
-                  </div>
-                )}
-              </div>
-              <div className="profile-photo">
-                <div className="profile-icon">
-                  <img
-                    src={
-                      props.user.profilePicture &&
-                      props.user.profilePicture.img !== ""
-                        ? generatePublicUrl(props.user.profilePicture.img)
-                        : userProfilePicture
-                    }
-                    alt="profile"
-                  ></img>
-                  {!differentUser && (
-                    <label htmlFor="change-profile">
-                      <div className="change-profile-pic-icon">
-                        <ion-icon name="camera-outline"></ion-icon>
-                      </div>
-                    </label>
-                  )}
-                  <input
-                    onChange={handleProfilePictureUpload}
-                    type="file"
-                    id="change-profile"
-                  ></input>
-                </div>
-              </div>
-            </div>
-          </div>
-          {differentUser && (
-            <div className="follow-unfollow">
-              {followUser ? <div className="follow">
-                <span onClick={handleAddUserPublicity}>Follow</span>
-                <div className="follow-icon">
-                  <ion-icon onClick={handleAddUserPublicity} name="person-add-outline"></ion-icon>
-                </div>
-              </div> :
-               <div className="follow" style={{width:"115px" , backgroundColor:"#1E90FF", color:"white"}}>
-               <span onClick={handleRemoveUserPublicity}>Following</span>
-               <div className="follow-icon">
-                 <ion-icon  onClick={handleRemoveUserPublicity} name="checkmark-outline"></ion-icon>
-               </div>
-             </div>
+      <div className="profile-cover-photo">
+        <div className="cover-photo">
+          <div className="cover-pic">
+            <img
+              src={
+                coverPicturePreview !== null
+                  ? coverPicturePreview
+                  : props.user.coverPicture &&
+                    props.user.coverPicture.img !== ""
+                  ? generatePublicUrl(props.user.coverPicture.img)
+                  : userCoverPicture
               }
-            </div>
-          )}
-          <div className="username">
-            <span>
-              {props.user.firstName} {props.user.lastName}
-            </span>
+              alt="cover"
+            ></img>
+            {!differentUser && (
+              <div className="change-cover">
+                <label htmlFor="change-cover">
+                  <span>Change Cover Photo</span>
+                </label>
+                <label htmlFor="change-cover">
+                  <div>
+                    <ion-icon name="camera"></ion-icon>
+                  </div>
+                </label>
+                <input
+                  onChange={handleChangeCoverPictureUpload}
+                  id="change-cover"
+                  type="file"
+                ></input>
+              </div>
+            )}
+            {coverPicturePreview && (
+              <div className="save-cover">
+                <span onClick={submitChangeCoverPicture}>Save Changes</span>
+                <div>
+                  <ion-icon
+                    onClick={submitChangeCoverPicture}
+                    name="checkmark"
+                  ></ion-icon>
+                </div>
+              </div>
+            )}
           </div>
-          <div className="user-bio">
-            <p>{props.user.bio}</p>
-          </div>
-          <div className="mini-bar">
-            <div className="mini-links">
-              <ul>
-                <li className={`mini-bar-item ${active1}`}>
-                  <NavLink exact to={`/profile/${props.user.username}`}>
-                    Posts
-                  </NavLink>
-                </li>
-                <li className={`mini-bar-item ${active2}`}>
-                  <NavLink to={`/profile/${props.user.username}/followers`}>
-                    Followers ({ props.user && props.user.followers.length})
-                  </NavLink>
-                </li>
-                <li className={`mini-bar-item ${active3}`}>
-                  <NavLink to={`/profile/${props.user.username}/following`}>
-                    Following ({ props.user && props.user.following.length})
-                  </NavLink>
-                </li>
-                {!differentUser && (
-                  <li className={`mini-bar-item ${active4}`}>
-                    <NavLink to={`/profile/${props.user.username}/edit`}>
-                      Edit Profile
-                    </NavLink>
-                  </li>
-                )}
-              </ul>
+          <div className="profile-photo">
+            <div className="profile-icon">
+              <img
+                src={
+                  props.user.profilePicture &&
+                  props.user.profilePicture.img !== ""
+                    ? generatePublicUrl(props.user.profilePicture.img)
+                    : userProfilePicture
+                }
+                alt="profile"
+              ></img>
+              {!differentUser && (
+                <label htmlFor="change-profile">
+                  <div className="change-profile-pic-icon">
+                    <ion-icon name="camera-outline"></ion-icon>
+                  </div>
+                </label>
+              )}
+              <input
+                onChange={handleProfilePictureUpload}
+                type="file"
+                id="change-profile"
+              ></input>
             </div>
           </div>
         </div>
-        {active1 === "active" && (
-          <HomePage
-            posts={props.posts}
-            user={props.user}
-            differentUser={differentUser}
-          ></HomePage>
-        )}
-        {active2 === "active" && <Publicity user={props.user} task="followers"></Publicity>}
-        {active3 === "active" && <Publicity user={props.user} task="following"></Publicity>}
-        {active4 === "active" && <EditProfile user={props.user} task="followers"></EditProfile>}
-
-        {renderProfilePicturePreviewMoal()}
       </div>
+      {differentUser && (
+        <div className="follow-unfollow">
+          {followUser ? <div className="follow">
+            <span onClick={handleAddUserPublicity}>Follow</span>
+            <div className="follow-icon">
+              <ion-icon onClick={handleAddUserPublicity} name="person-add-outline"></ion-icon>
+            </div>
+          </div> :
+           <div className="follow" style={{width:"115px" , backgroundColor:"#1E90FF", color:"white"}}>
+           <span onClick={handleRemoveUserPublicity}>Following</span>
+           <div className="follow-icon">
+             <ion-icon  onClick={handleRemoveUserPublicity} name="checkmark-outline"></ion-icon>
+           </div>
+         </div>
+          }
+        </div>
+      )}
+      <div className="username">
+        <span>
+          {props.user.firstName} {props.user.lastName}
+        </span>
+      </div>
+      <div className="user-bio">
+        <p>{props.user.bio}</p>
+      </div>
+      <div className="mini-bar">
+        <div className="mini-links">
+          <ul>
+            <li className={`mini-bar-item ${active1}`}>
+              <NavLink exact to={`/profile/${props.user.username}`}>
+                Posts
+              </NavLink>
+            </li>
+            <li className={`mini-bar-item ${active2}`}>
+              <NavLink to={`/profile/${props.user.username}/followers`}>
+                Followers ({ props.user && props.user.followers.length})
+              </NavLink>
+            </li>
+            <li className={`mini-bar-item ${active3}`}>
+              <NavLink to={`/profile/${props.user.username}/following`}>
+                Following ({ props.user && props.user.following.length})
+              </NavLink>
+            </li>
+            {!differentUser && (
+              <li className={`mini-bar-item ${active4}`}>
+                <NavLink to={`/profile/${props.user.username}/edit`}>
+                  Edit Profile
+                </NavLink>
+              </li>
+            )}
+          </ul>
+        </div>
+      </div>
+    </div>
+    {active1 === "active" && (
+      <HomePage
+        posts={props.posts}
+        user={props.user}
+        differentUser={differentUser}
+      ></HomePage>
+    )}
+    {active2 === "active" && <Publicity user={props.user} task="followers"></Publicity>}
+    {active3 === "active" && <Publicity user={props.user} task="following"></Publicity>}
+    {active4 === "active" && <EditProfile user={props.user} task="followers"></EditProfile>}
+
+    {renderProfilePicturePreviewMoal()}
+  </div> :
+  <div className="no-user-slogan">
+      <span>Ooops! No User Found</span>
+  </div>  
+    }
     </>
   );
 };

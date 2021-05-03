@@ -15,7 +15,9 @@ div.post-11{
     margin: -4px 5px 0 10px;
     /* align-self: center; */
     font-weight: 500;
+   cursor: pointer;
 }
+
 .profilePost-11 span.sloganPost-11{
     /* align-self: center; */
     margin-top: -3px;
@@ -37,6 +39,7 @@ div.post-11 div.dropDownIcon ion-icon{
 .profilePost-11 .profilePic-11 img{
 width:30px;
 border-radius:50%;
+cursor: pointer;
 }
 
 .post-11{
@@ -134,7 +137,7 @@ box-sizing: border-box;
 }
 .post-11 div.writeComment-11 ion-icon{
     position: absolute;
-    right: 0;
+    right: 15px;
     margin-top:15px
 }
 .post-11 .writeCommentSection-11{

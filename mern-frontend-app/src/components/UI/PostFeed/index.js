@@ -5,6 +5,8 @@ import { updatePost } from "../../../Actions";
 import { generatePublicUrl } from "../../../urlConfig";
 import DropDown from "../DropDown";
 import "./style.css";
+import userPicture from "../../../Media/default-user.png"
+import { useHistory } from "react-router";
 /**
  * @author
  * @function PostFeed
@@ -12,6 +14,7 @@ import "./style.css";
 
 const PostFeed = (props) => {
   const dispatch = useDispatch();
+  const history = useHistory()
   const user = useSelector((state) => state.auth.user);
   const [postLiked, setPostLiked] = useState(false);
   const [dropDown, setDropDown] = useState(false);
@@ -115,13 +118,19 @@ const PostFeed = (props) => {
     setDropDown(false);
   };
 
+  const handleRedirect = ()=>{
+   history.push(`/profile/${props.user.username}`)
+  }
+
   return (
     <div className="post-11">
       <div className="profilePost-11">
         <div className="profilePic-11">
-          <img src={props.src} alt="profile pic"></img>
+          <img onClick={handleRedirect} src={props.src} alt="profile pic"></img>
         </div>
-        <span className="usernamePost-11">{props.fullName}</span>
+          <span onClick={handleRedirect} className="usernamePost-11">{props.fullName}</span>
+        
+        
         <span className="sloganPost-11">uploaded new photo.</span>
         <div className="dropDownIcon">
           {verifiedUser && (
@@ -150,7 +159,7 @@ const PostFeed = (props) => {
       {props.uploadedMedia && (
         <div className="uploadedMedia-11">
           <img
-            src={generatePublicUrl(props.uploadedMedia)}
+            src={props.uploadedMedia ? generatePublicUrl(props.uploadedMedia) : userPicture}
             alt="uploaded Media"
           ></img>
         </div>
@@ -196,7 +205,7 @@ const PostFeed = (props) => {
       <div className="commentSection-11"></div>
       <div className="writeCommentSection-11">
         <div className="profilePic-11">
-          <img src={props.src} alt="profile pic"></img>
+          <img src={user.profilePicture && user.profilePicture.img !=="" ? generatePublicUrl(user.profilePicture.img) : userPicture} alt="profile pic"></img>
         </div>
         <div className="writeComment-11">
           {userComment.length > 0 && (
