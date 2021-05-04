@@ -282,12 +282,12 @@ useEffect(()=>{
             </li>
             <li className={`mini-bar-item ${active2}`}>
               <NavLink to={`/profile/${props.user.username}/followers`}>
-                Followers ({ props.user && props.user.followers.length})
+                Followers ({ props.user.followers ? props.user.followers.length:0})
               </NavLink>
             </li>
             <li className={`mini-bar-item ${active3}`}>
               <NavLink to={`/profile/${props.user.username}/following`}>
-                Following ({ props.user && props.user.following.length})
+                Following ({ props.user.following ? props.user.following.length: 0})
               </NavLink>
             </li>
             {!differentUser && (
