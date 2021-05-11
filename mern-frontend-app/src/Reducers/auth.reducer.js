@@ -22,17 +22,18 @@ const initAuthState = {
     authenticating: false,
     loading: false,
     error: null,
-    message: ''
+    message:""
 }
 
 const authReducer = (state = initAuthState,action)=>{
-    console.log(action);
+    // console.log(action);
     switch(action.type){
        
         case authConstants.LOGIN_REQUEST : 
           state = {
             ...state,
-            authenticating:true
+            authenticating:true,
+            loading:true
         }
         break
         case authConstants.LOGIN_SUCCESS : 
@@ -41,9 +42,18 @@ const authReducer = (state = initAuthState,action)=>{
             user:action.payload.user,
             token:action.payload.token,
             authenticate:true,
-            authenticating:false
+            authenticating:false,
+            loading:false
         }
         break
+        case authConstants.LOGIN_FAILURE : 
+        state = {
+          ...state,
+          loading:false,
+          message:action.payload.message,
+          error:action.payload.error
+      }
+      break
         case authConstants.LOGOUT_REQUEST:
             state = {
                 ...state,

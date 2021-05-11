@@ -6,11 +6,20 @@ import coverPhoto from "../../Media/cover-photo.jpeg";
 import profilePic from "../../Media/profilePic.jpg";
 import { useSelector,useDispatch } from "react-redux";
 import {getUserByUserName, getUserPosts} from '../../Actions/user.action.js'
-
+import BounceLoader from "react-spinners/BounceLoader";
+import { css } from "@emotion/core";
 /**
  * @author
  * @function ProfilePage
  **/
+
+ const override = css`
+ border-color: red;
+ z-index:1000;
+ position:absolute;
+ top:50%;
+ left:48%;
+`;
 
 const ProfilePage = (props) => {
 
@@ -34,6 +43,9 @@ const ProfilePage = (props) => {
 
   return (
     <div className="profile-page">
+      <BounceLoader color={'#007bff'} loading={user.loading} css={override} size={40}></BounceLoader>
+      {!user.loading && 
+      <>
       <NavBar></NavBar>
       <BannerBox
         user={user.searchedUser.length>0 ? user.searchedUser[0] : null}
@@ -41,7 +53,8 @@ const ProfilePage = (props) => {
         profilePic={profilePic}
         posts={user.posts.length>0 && user.posts}
       ></BannerBox>
-     
+      </>
+      }
     </div>
   );
 };

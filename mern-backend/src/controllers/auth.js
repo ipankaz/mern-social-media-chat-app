@@ -7,7 +7,7 @@ exports.signup =  (req, res) => {
  User.findOne({ email: req.body.email }).exec(async (error, user) => {
     if (user) {
       return res.status(400).json({
-        message: "User Already registered",
+        message: "Email Already Registered",
       });
     }
     let profilePicture = {
@@ -37,16 +37,50 @@ exports.signup =  (req, res) => {
       if (error) {
           console.log(error);
         return res.status(400).json({
-          message: "User not signuped",
+          message: "Signup Failed !",
         });
       }
       if (data) {
         return res.status(201).json({
-          message: "User created successfully",
+          message: "User Created Successfully !",
         });
       }
     });
   });
+};
+exports.signupAuthentication =  (req, res) => {
+    const {email,username,contactNumber} = req.body;
+    if(email){
+      User.findOne({email:email}).exec(async (error,data)=>{
+        if(error){
+          res.status(400).json({message:"Invalid email" ,error:error})
+        }else if(data){
+          res.status(200).json({message:"Email exist"})
+        }else{
+          res.status(200).json({message:"Valid email"})
+        }
+      })
+    }else if(username){
+      User.findOne({username:username}).exec(async (error,data)=>{
+        if(error){
+          res.status(400).json({message:"Invalid username" , error:error})
+        }else if(data){
+          res.status(200).json({message:"Username exist"})
+        }else{
+          res.status(200).json({message:"Valid username"})
+        }
+      })
+    }else if(contactNumber){
+      User.findOne({contactNumber:contactNumber}).exec(async (error,data)=>{
+        if(error){
+          res.status(400).json({message:"Invalid mobile number" , error:error})
+        }else if(data){
+          res.status(200).json({message:"mobile number exist"})
+        }else{
+          res.status(200).json({message:"Valid mobile number"})
+        }
+      })
+    }
 };
 
 exports.signin = (req, res) => {
@@ -71,7 +105,7 @@ exports.signin = (req, res) => {
         });
       }
     }else{
-      return res.status(400).json({message:"no user found"})
+      return res.status(400).json({message:"User doesn't exist"})
     }
   });
 };

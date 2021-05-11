@@ -173,6 +173,7 @@
   .nav_link {
     color: var(--white-color);
     text-decoration: none;
+    cursor: pointer;
   }
   
   .nav_social {
@@ -276,6 +277,7 @@
       padding: .5rem .8rem;
       border-radius: .25rem;
       text-decoration: none;
+      cursor: pointer;
     }
     .nav_link:hover {
       background-color: var(--first-color);
@@ -367,6 +369,7 @@
   }
   .search-container .search-result .search-item .profile-picture-0 img{
       width: 50px;
+      height: 50px;
       border-radius: 50%;
   }
   .search-container .search-result .search-item .user-name-0{
@@ -387,6 +390,56 @@
     border-radius: 5px;
     text-align: center;
     padding: 20px;
+  }
+  .search-container .loader{
+   height: 100px;
+  }
+
+  @media screen and (max-width: 500px) {
+    .search-container .search-input input{
+      padding: 10px 15px;
+      font-size: 12px;
+      border-radius: 25px;
+    }
+    .search-container .search-input .search-icon ion-icon{
+      position: absolute; 
+       top: 8px;
+      right: 15px;
+    }
+    .search-container .search-result{
+      width: 100%;
+      margin: 25px auto;
+      border-radius: 7px;
+    }
+  
+    .search-container .search-result .search-item{
+      padding: 10px;
+      border-radius: 7px;
+      margin-bottom: 15px;
+   
+    }
+    .search-container .search-result .search-item .profile-picture-0{
+      margin-right: 4px;
+    }
+    .search-container .search-result .search-item .profile-picture-0 img{
+        width: 35px;
+        height: 35px;
+    }
+
+    .search-container .search-result .search-item .user-name-0 span{
+        padding: 7px;
+        font-size: 13px;
+    }
+    .search-container .search-result .no-result-slogan{
+     
+      border-radius: 4px;
+      font-size: 12px;
+      padding: 15px;
+    }
+    .search-container .loader{
+      height: 60px;
+     }
+    
   }
   
   
